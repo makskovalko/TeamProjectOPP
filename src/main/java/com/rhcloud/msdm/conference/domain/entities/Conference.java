@@ -8,7 +8,13 @@ import java.util.List;
 @Entity
 @Table(name = "conference")
 public class Conference {
-    private int id, participantLimit, participantCount;
+
+    @Id
+    @GeneratedValue
+    @Column(name = "id")
+    private Integer id;
+
+    private Integer participantLimit, participantCount;
     private String name, country, city, address;
     private Date date;
 
@@ -29,14 +35,12 @@ public class Conference {
             inverseJoinColumns = @JoinColumn(name = "speaker_id"))
     private List<Speaker> speakers = new ArrayList<Speaker>();
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id")
-    public int getId() {
+
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -95,7 +99,7 @@ public class Conference {
     }
 
     @Column(name = "participant_limit")
-    public int getParticipantLimit() {
+    public Integer getParticipantLimit() {
         return participantLimit;
     }
 
@@ -104,11 +108,11 @@ public class Conference {
     }
 
     @Column(name = "participant_count")
-    public int getParticipantCount() {
+    public Integer getParticipantCount() {
         return participantCount;
     }
 
-    public void setParticipantCount(int participantCount) {
+    public void setParticipantCount(Integer participantCount) {
         this.participantCount = participantCount;
     }
 

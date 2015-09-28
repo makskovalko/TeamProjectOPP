@@ -5,43 +5,47 @@ import javax.persistence.*;
 @Entity
 @Table(name = "ticket")
 public class Ticket {
-    private int id, conference_id, participant_id;
+
+    @Id
+    @GeneratedValue
+    @Column(name = "id")
+    private Integer id;
+
+    private Integer conference_id, participant_id;
     private String number, token;
 
     @OneToOne(cascade = { CascadeType.ALL, CascadeType.PERSIST })
-    @JoinColumn(name = "conference_id")
+    @JoinColumn(name = "conference_id", insertable = false, updatable = false)
     private Conference conference;
 
     @OneToOne(cascade = { CascadeType.ALL, CascadeType.PERSIST })
-    @JoinColumn(name = "participant_id")
+    @JoinColumn(name = "participant_id", insertable = false, updatable = false)
     private Participant participant;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id")
-    public int getId() {
+    public Integer getId() {
         return id;
     }
+
 
     public void setId(int id) {
         this.id = id;
     }
 
     @Column(name = "conference_id")
-    public int getConference_id() {
+    public Integer getConference_id() {
         return conference_id;
     }
 
-    public void setConference_id(int conference_id) {
+    public void setConference_id(Integer conference_id) {
         this.conference_id = conference_id;
     }
 
     @Column(name = "participant_id")
-    public int getParticipant_id() {
+    public Integer getParticipant_id() {
         return participant_id;
     }
 
-    public void setParticipant_id(int participant_id) {
+    public void setParticipant_id(Integer participant_id) {
         this.participant_id = participant_id;
     }
 

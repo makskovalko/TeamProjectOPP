@@ -9,9 +9,9 @@ import java.util.List;
 public class Speaker {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue
     @Column(name = "id")
-    private int id;
+    private Integer id;
 
     @Column(name = "user_name")
     private String userName;
@@ -46,11 +46,11 @@ public class Speaker {
     @ManyToMany(mappedBy = "speakers")
     private List<Conference> conferences = new ArrayList<Conference>();
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

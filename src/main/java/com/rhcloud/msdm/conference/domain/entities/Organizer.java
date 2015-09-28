@@ -7,9 +7,9 @@ import javax.persistence.*;
 @Table(name = "organizer")
 public class Organizer {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue
     @Column(name = "id")
-    private int id;
+    private Integer id;
 
     @Column(name = "user_name")
     private String userName;
@@ -32,11 +32,11 @@ public class Organizer {
     @Column(name = "profile_image")
     private String profileImage;
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

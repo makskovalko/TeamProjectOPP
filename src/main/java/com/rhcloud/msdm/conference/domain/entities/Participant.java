@@ -8,21 +8,22 @@ import java.util.List;
 @Entity
 @Table(name = "participant")
 public class Participant {
-    private int id;
+
+    @Id
+    @GeneratedValue
+    @Column(name = "id")
+    private Integer id;
     private String firstName, lastName, userName, password, email, phoneNumber, workPlace, jobPosition, additionalInfo, profileImage;
     private Date dateOfBirth;
 
     @ManyToMany(mappedBy = "participants")
     private List<Conference> conferences = new ArrayList<Conference>();
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id")
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
