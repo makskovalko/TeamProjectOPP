@@ -9,7 +9,9 @@ import java.util.List;
 @Table(name = "organizer")
 public class Organizer extends User {
 
-    public Organizer() {}
+    public Organizer() {
+        this.confirmationKey = generateConfirmKey();
+    }
 
     @Id
     @GeneratedValue
@@ -40,6 +42,9 @@ public class Organizer extends User {
     @Column(name = "active", length = 1)
     private Integer active;
 
+    @Column(name = "confirmation_key", length = 10)
+    private String confirmationKey;
+
     @OneToMany(cascade = { CascadeType.ALL, CascadeType.PERSIST })
     @JoinColumn(name = "conference_id")
     private List<Conference> conferences = new ArrayList<Conference>();
@@ -62,6 +67,14 @@ public class Organizer extends User {
 
     public void setActive(Integer active) {
         this.active = active;
+    }
+
+    public String getConfirmationKey() {
+        return confirmationKey;
+    }
+
+    public void setConfirmationKey(String confirmationKey) {
+        this.confirmationKey = confirmationKey;
     }
 
     public void setUserName(String userName) {
@@ -122,5 +135,18 @@ public class Organizer extends User {
 
     public void setConferences(List<Conference> conferences) {
         this.conferences = conferences;
+    }
+
+    public String generateConfirmKey() {
+        String generatedKey = "";
+        StringBuilder symbols = new StringBuilder();
+
+        for (char c = 'a'; c <= 'z'; c++) symbols.append(c);
+        for (char c = '@'; c <= 'Z'; c++) symbols.append(c);
+        for (char c = '1'; c <= '9'; c++) symbols.append(c);
+
+        for (int i = 0; i < 10; i++) generatedKey += symbols.charAt((int)(Math.random() * symbols.length()));
+
+        return generatedKey;
     }
 }

@@ -42,9 +42,9 @@ public class MainController {
         organizer.setLastName("Testov");
 
         Participant participant = new Participant();
-        participant.setUserName("TestParticipant");
+        participant.setUserName("Test");
         participant.setPassword("123");
-        participant.setEmail("test_participant@gmail.com");
+        participant.setEmail("test@gmail.com");
         participant.setFirstName("Test");
         participant.setLastName("Testov");
 
@@ -55,10 +55,7 @@ public class MainController {
         speaker.setFirstName("Test");
         speaker.setLastName("Testov");
 
-        if (registrationService.checkData(participant)) {
-            //request.getSession().setAttribute("");
-            return "User was registered successfully! :)";
-        }
+        if (registrationService.checkData(participant)) return participant.getConfirmationKey(); /*"User was registered successfully! :)";*/
         else return "Fail";
     }
 
