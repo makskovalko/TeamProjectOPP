@@ -11,10 +11,9 @@
         http://www.springframework.org/schema/mvc
         http://www.springframework.org/schema/mvc/spring-mvc.xsd
         http://www.springframework.org/schema/data/jpa
-        http://www.springframework.org/schema/data/jpa/spring-jpa.xsd
-        http://www.springframework.org/schema/jdbc
-        http://www.springframework.org/schema/jdbc/spring-jdbc.xsd">
+        http://www.springframework.org/schema/data/jpa/spring-jpa.xsd">
 
+    <context:property-placeholder location="WEB-INF/db-properties" />
     <mvc:annotation-driven />
     <mvc:resources mapping="/resources/**" location="/resources/" />
 
@@ -28,10 +27,10 @@
     <jpa:repositories base-package="com.rhcloud.msdm.conference.repository"/>
 
     <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
-        <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
-        <property name="url" value="jdbc:mysql://localhost:3306/person" />
-        <property name="username" value="alexandr"/>
-        <property name="password" value="zDTicwCC"/>
+        <property name="driverClassName" value="${db.driver.class.name}"/>
+        <property name="url" value="${db.url}" />
+        <property name="username" value="${db.user.name}"/>
+        <property name="password" value="${db.user.password}"/>
     </bean>
 
     <bean id="jpaVendorAdapter" class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
