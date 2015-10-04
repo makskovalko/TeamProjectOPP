@@ -6,7 +6,9 @@ import java.util.List;
 
 @Entity
 @Table(name = "speaker")
-public class Speaker {
+public class Speaker extends User {
+
+    public Speaker() {}
 
     @Id
     @GeneratedValue
@@ -43,6 +45,9 @@ public class Speaker {
     @Column(name = "additional_info", columnDefinition = "TEXT")
     private String additionalInfo;
 
+    @Column(name = "active", length = 1)
+    private Integer active;
+
     @ManyToMany(mappedBy = "speakers")
     private List<Conference> conferences = new ArrayList<Conference>();
 
@@ -68,6 +73,14 @@ public class Speaker {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public Integer getActive() {
+        return active;
+    }
+
+    public void setActive(Integer active) {
+        this.active = active;
     }
 
     public String getFirstName() {
