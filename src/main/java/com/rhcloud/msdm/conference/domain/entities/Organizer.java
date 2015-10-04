@@ -2,10 +2,15 @@ package com.rhcloud.msdm.conference.domain.entities;
 
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "organizer")
-public class Organizer {
+public class Organizer extends User {
+
+    public Organizer() {}
+
     @Id
     @GeneratedValue
     @Column(name = "id")
@@ -32,6 +37,13 @@ public class Organizer {
     @Column(name = "profile_image")
     private String profileImage;
 
+    @Column(name = "active", length = 1)
+    private Integer active;
+
+    @OneToMany(cascade = { CascadeType.ALL, CascadeType.PERSIST })
+    @JoinColumn(name = "conference_id")
+    private List<Conference> conferences = new ArrayList<Conference>();
+
     public Integer getId() {
         return id;
     }
@@ -42,6 +54,14 @@ public class Organizer {
 
     public String getUserName() {
         return userName;
+    }
+
+    public Integer getActive() {
+        return active;
+    }
+
+    public void setActive(Integer active) {
+        this.active = active;
     }
 
     public void setUserName(String userName) {
@@ -94,5 +114,13 @@ public class Organizer {
 
     public void setProfileImage(String profileImage) {
         this.profileImage = profileImage;
+    }
+
+    public List<Conference> getConferences() {
+        return conferences;
+    }
+
+    public void setConferences(List<Conference> conferences) {
+        this.conferences = conferences;
     }
 }

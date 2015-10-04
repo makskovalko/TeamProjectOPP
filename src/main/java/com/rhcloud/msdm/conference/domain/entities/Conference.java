@@ -21,8 +21,7 @@ public class Conference {
     @OneToOne(cascade = CascadeType.ALL)
     private Category category;
 
-    @OneToOne(cascade = { CascadeType.ALL, CascadeType.PERSIST })
-    @JoinColumn(name = "organizer_id")
+    @ManyToOne(cascade = { CascadeType.ALL, CascadeType.PERSIST })
     private Organizer organizer;
 
     @ManyToMany(fetch = FetchType.LAZY, cascade = { CascadeType.ALL, CascadeType.PERSIST })
