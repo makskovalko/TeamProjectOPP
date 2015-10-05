@@ -138,19 +138,6 @@ public class Organizer extends User {
         this.conferences = conferences;
     }
 
-    public String generateConfirmKey() {
-        String generatedKey = "";
-        StringBuilder symbols = new StringBuilder();
-
-        for (char c = 'a'; c <= 'z'; c++) symbols.append(c);
-        for (char c = '@'; c <= 'Z'; c++) symbols.append(c);
-        for (char c = '1'; c <= '9'; c++) symbols.append(c);
-
-        for (int i = 0; i < 10; i++) generatedKey += symbols.charAt((int)(Math.random() * symbols.length()));
-
-        return generatedKey;
-    }
-
     public String getConfirmURL() {
         return "http://localhost:8080/confirm_email/organizer/" + userName + "/" + confirmationKey;
     }

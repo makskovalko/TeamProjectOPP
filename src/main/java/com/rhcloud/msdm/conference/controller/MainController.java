@@ -30,10 +30,8 @@ public class MainController {
     @Autowired
     private AuthorizationService authorizationService;
 
-
     @Resource(name = "mailSenderService")
     private MailSender mailSender;
-
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public String hello(Model model) {
@@ -71,11 +69,14 @@ public class MainController {
         speaker.setLastName("Testov");
 
         if (registrationService.checkData(participant)) {
-            //return participant.getConfirmationKey(); /*"User was registered successfully! :)";*/
             mailSender.sendMail(participant.getEmail(), "Conference Registration", participant.getConfirmURL());
-            return new ResponseEntity<String>("Подтвердите свою регистрацию, перейдя по ссылке в письме, высланном Вам на e-mail", httpHeaders, HttpStatus.OK);
+            return new ResponseEntity<String>(
+                    "Подтвердите свою регистрацию, перейдя по ссылке в письме, высланном Вам на e-mail", httpHeaders, HttpStatus.OK
+            );
         }
-        else return new ResponseEntity<String>("Ошибка регистрации! Пользователь с такими данными уже зарегистрирован!", httpHeaders, HttpStatus.OK);
+        else return new ResponseEntity<String>(
+                "Ошибка регистрации! Пользователь с такими данными уже зарегистрирован!", httpHeaders, HttpStatus.OK
+        );
     }
 
     @RequestMapping(value = "/confirm_email/{user}/{userName}/{confirmKey}")
