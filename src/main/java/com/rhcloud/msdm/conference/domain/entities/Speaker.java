@@ -10,6 +10,7 @@ public class Speaker extends User {
 
     public Speaker() {
         this.confirmationKey = generateConfirmKey();
+        this.active = 0;
     }
 
     @Id
@@ -179,5 +180,9 @@ public class Speaker extends User {
         for (int i = 0; i < 10; i++) generatedKey += symbols.charAt((int)(Math.random() * symbols.length()));
 
         return generatedKey;
+    }
+
+    public String getConfirmURL() {
+        return "http://localhost:8080/confirm_email/speaker/" + userName + "/" + confirmationKey;
     }
 }

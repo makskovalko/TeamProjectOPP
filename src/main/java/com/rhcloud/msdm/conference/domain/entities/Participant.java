@@ -11,6 +11,7 @@ public class Participant extends User {
 
     public Participant() {
         this.confirmationKey = generateConfirmKey();
+        this.active = 0;
     }
 
     @Id
@@ -192,5 +193,9 @@ public class Participant extends User {
         for (int i = 0; i < 10; i++) generatedKey += symbols.charAt((int)(Math.random() * symbols.length()));
 
         return generatedKey;
+    }
+
+    public String getConfirmURL() {
+        return "http://localhost:8080/confirm_email/participant/" + userName + "/" + confirmationKey;
     }
 }
