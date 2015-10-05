@@ -167,4 +167,5 @@ public class Participant extends User {
     public void setConferences(List<Conference> conferences) {
         this.conferences = conferences;
     }
+
 }

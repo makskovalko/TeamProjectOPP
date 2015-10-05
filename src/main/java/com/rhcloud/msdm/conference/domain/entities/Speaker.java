@@ -154,4 +154,5 @@ public class Speaker extends User {
     public void setConferences(List<Conference> conferences) {
         this.conferences = conferences;
     }
+
 }

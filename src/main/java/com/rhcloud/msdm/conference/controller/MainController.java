@@ -10,6 +10,7 @@ import com.rhcloud.msdm.conference.utils.MailSender;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -64,6 +65,7 @@ public class MainController {
 
         if (registrationService.checkData(participant)) {
             //request.getSession().setAttribute("");
+
             return "User was registered successfully! :)";
         } else return "Fail";
     }
@@ -83,6 +85,7 @@ public class MainController {
         if (authorizationService.authorizeUser(speaker) != null) request.getSession().setAttribute("user", speaker);
         return ((User) request.getSession().getAttribute("user")).getUserName();
     }
+
 
 
     @RequestMapping(value = "/sendMail", method = RequestMethod.GET)

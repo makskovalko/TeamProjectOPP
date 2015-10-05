@@ -138,4 +138,6 @@ public class Conference {
     public void setSpeakers(List<Speaker> speakers) {
         this.speakers = speakers;
     }
+
+
 }
