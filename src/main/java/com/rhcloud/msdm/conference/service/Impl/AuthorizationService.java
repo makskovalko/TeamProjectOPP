@@ -27,9 +27,12 @@ public class AuthorizationService implements Authorization {
     @Override
     public User authorizeUser(User user) {
         if (validateData(user)) {
-            if (user instanceof Participant) return participantRepository.findOne(user.getId());
-            else if (user instanceof Speaker) return speakerRepository.findOne(user.getId());
-            else if (user instanceof Organizer) return organizerRepository.findOne(user.getId());
+            if (user instanceof Participant)
+                return participantRepository.findParticipantByEmailAndUserName(user.getEmail(), user.getUserName());
+            else if (user instanceof Speaker)
+                return speakerRepository.findSpeakerByEmailAndUserName(user.getEmail(), user.getUserName());
+            else if (user instanceof Organizer)
+                return organizerRepository.findOrganizerByEmailAndUserName(user.getEmail(), user.getUserName());
         }
         return null;
     }

@@ -9,7 +9,10 @@ import java.util.List;
 @Table(name = "participant")
 public class Participant extends User {
 
-    public Participant() {}
+    public Participant() {
+        this.confirmationKey = generateConfirmKey();
+        this.active = 0;
+    }
 
     @Id
     @GeneratedValue
@@ -53,6 +56,9 @@ public class Participant extends User {
     @Column(name = "active", length = 1)
     private Integer active;
 
+    @Column(name = "confirmation_key", length = 10)
+    private String confirmationKey;
+
     @ManyToMany(mappedBy = "participants")
     private List<Conference> conferences = new ArrayList<Conference>();
 
@@ -70,6 +76,14 @@ public class Participant extends User {
 
     public void setActive(Integer active) {
         this.active = active;
+    }
+
+    public String getConfirmationKey() {
+        return confirmationKey;
+    }
+
+    public void setConfirmationKey(String confirmationKey) {
+        this.confirmationKey = confirmationKey;
     }
 
     public String getFirstName() {
@@ -166,6 +180,24 @@ public class Participant extends User {
 
     public void setConferences(List<Conference> conferences) {
         this.conferences = conferences;
+    }
+
+
+    public String generateConfirmKey() {
+        String generatedKey = "";
+        StringBuilder symbols = new StringBuilder();
+
+        for (char c = 'a'; c <= 'z'; c++) symbols.append(c);
+        for (char c = '@'; c <= 'Z'; c++) symbols.append(c);
+        for (char c = '1'; c <= '9'; c++) symbols.append(c);
+
+        for (int i = 0; i < 10; i++) generatedKey += symbols.charAt((int)(Math.random() * symbols.length()));
+
+        return generatedKey;
+    }
+
+    public String getConfirmURL() {
+        return "http://localhost:8080/confirm_email/participant/" + userName + "/" + confirmationKey;
     }
 
 }

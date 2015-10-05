@@ -8,7 +8,10 @@ import java.util.List;
 @Table(name = "speaker")
 public class Speaker extends User {
 
-    public Speaker() {}
+    public Speaker() {
+        this.confirmationKey = generateConfirmKey();
+        this.active = 0;
+    }
 
     @Id
     @GeneratedValue
@@ -48,8 +51,19 @@ public class Speaker extends User {
     @Column(name = "active", length = 1)
     private Integer active;
 
+    @Column(name = "confirmation_key", length = 10)
+    private String confirmationKey;
+
     @ManyToMany(mappedBy = "speakers")
     private List<Conference> conferences = new ArrayList<Conference>();
+
+    public String getConfirmationKey() {
+        return confirmationKey;
+    }
+
+    public void setConfirmationKey(String confirmationKey) {
+        this.confirmationKey = confirmationKey;
+    }
 
     public Integer getId() {
         return id;
@@ -153,6 +167,24 @@ public class Speaker extends User {
 
     public void setConferences(List<Conference> conferences) {
         this.conferences = conferences;
+    }
+
+
+    public String generateConfirmKey() {
+        String generatedKey = "";
+        StringBuilder symbols = new StringBuilder();
+
+        for (char c = 'a'; c <= 'z'; c++) symbols.append(c);
+        for (char c = '@'; c <= 'Z'; c++) symbols.append(c);
+        for (char c = '1'; c <= '9'; c++) symbols.append(c);
+
+        for (int i = 0; i < 10; i++) generatedKey += symbols.charAt((int)(Math.random() * symbols.length()));
+
+        return generatedKey;
+    }
+
+    public String getConfirmURL() {
+        return "http://localhost:8080/confirm_email/speaker/" + userName + "/" + confirmationKey;
     }
 
 }

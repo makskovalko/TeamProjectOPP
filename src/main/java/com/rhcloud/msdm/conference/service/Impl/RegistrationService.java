@@ -47,4 +47,20 @@ public class RegistrationService implements Registration {
     public boolean validateData(User user) {
         return true;
     }
+
+    @Override
+    public boolean confirmRegistration(String user, String userName, String confirmKey) {
+        switch (user) {
+            case "participant":
+                participantRepository.confirmRegistration(userName, confirmKey);
+                return true;
+            case "speaker":
+                speakerRepository.confirmRegistration(userName, confirmKey);
+                return true;
+            case "organizer":
+                organizerRepository.confirmRegistration(userName, confirmKey);
+                return true;
+        }
+        return false;
+    }
 }

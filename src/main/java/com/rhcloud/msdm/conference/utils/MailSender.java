@@ -3,6 +3,7 @@ package com.rhcloud.msdm.conference.utils;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
+
 import javax.annotation.Resource;
 
 
@@ -19,6 +20,7 @@ public class MailSender {
         simpleMailMessage.setTo(to);
         simpleMailMessage.setSubject(subject);
         simpleMailMessage.setText(body);
+        simpleMailMessage.setFrom("projectmsdm@gmail.com");
 
         javaMailSender.send(simpleMailMessage);
     }
