@@ -79,17 +79,21 @@ public class MainController {
         );
     }
 
+
     @RequestMapping(value = "/confirm_email/{user}/{userName}/{confirmKey}")
     @ResponseBody
-    public ResponseEntity<String> confirmEmail(@PathVariable("user") String user, @PathVariable("userName") String userName,
-                               @PathVariable(value = "confirmKey") String confirmKey) {
+    public ResponseEntity<String> confirmEmail(@PathVariable("user") String user,
+                                               @PathVariable("userName") String userName,
+                                               @PathVariable(value = "confirmKey") String confirmKey) {
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add("Content-type", "text/plain;charset=UTF-8");
 
         if (registrationService.confirmRegistration(user, userName, confirmKey))
             return new ResponseEntity<String>("Регистрация прошла успешно!", httpHeaders, HttpStatus.OK);
         else return new ResponseEntity<String>("Ошибка регистрации!", httpHeaders, HttpStatus.OK);
+
     }
+
 
     //Mock
     @RequestMapping(value = "/signIn", method = RequestMethod.GET)
@@ -106,6 +110,7 @@ public class MainController {
         if (authorizationService.authorizeUser(speaker) != null) request.getSession().setAttribute("user", speaker);
         return ((User) request.getSession().getAttribute("user")).getUserName();
     }
+
 
     @RequestMapping(value = "/sendMail", method = RequestMethod.GET)
     public String sendMail() {

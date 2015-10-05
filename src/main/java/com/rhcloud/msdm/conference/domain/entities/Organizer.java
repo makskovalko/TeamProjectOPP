@@ -141,4 +141,5 @@ public class Organizer extends User {
     public String getConfirmURL() {
         return "http://localhost:8080/confirm_email/organizer/" + userName + "/" + confirmationKey;
     }
+
 }

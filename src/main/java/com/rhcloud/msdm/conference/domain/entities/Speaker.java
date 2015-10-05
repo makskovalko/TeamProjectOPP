@@ -172,4 +172,5 @@ public class Speaker extends User {
     public String getConfirmURL() {
         return "http://localhost:8080/confirm_email/speaker/" + userName + "/" + confirmationKey;
     }
+
 }

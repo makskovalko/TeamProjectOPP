@@ -19,9 +19,23 @@
     <context:component-scan base-package="com.rhcloud.msdm.conference"/>
     <context:property-placeholder location="classpath:config.properties" system-properties-mode="ENVIRONMENT" />
 
-    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
-        <property name="prefix" value="/WEB-INF/pages/"/>
-        <property name="suffix" value=".jsp"/>
+    <bean id="templateResolver"
+          class="org.thymeleaf.templateresolver.ServletContextTemplateResolver">
+        <property name="prefix" value="/WEB-INF/pages/" />
+        <property name="suffix" value=".html" />
+        <property name="characterEncoding" value="UTF-8" />
+        <property name="templateMode" value="HTML5" />
+    </bean>
+
+    <bean id="templateEngine"
+          class="org.thymeleaf.spring4.SpringTemplateEngine">
+        <property name="templateResolver" ref="templateResolver" />
+    </bean>
+
+    <bean class="org.thymeleaf.spring4.view.ThymeleafViewResolver">
+        <property name="templateEngine" ref="templateEngine" />
+        <property name="characterEncoding" value="UTF-8" />
+        <property name="contentType" value="text/html; charset=UTF-8" />
     </bean>
 
     <jpa:repositories base-package="com.rhcloud.msdm.conference.repository"/>
