@@ -21,13 +21,13 @@ public class RegistrationService implements Registration {
     @Override
     public boolean checkData(User user) {
         if (user instanceof Participant) {
-            if (participantRepository.findParticipantByEmailAndUserName(user.getEmail(), user.getUserName()) != null)
+            if (participantRepository.findParticipantByEmailOrUserName(user.getEmail(), user.getUserName()) != null)
                 return false;
         } else if (user instanceof Speaker) {
-            if (speakerRepository.findSpeakerByEmailAndUserName(user.getEmail(), user.getUserName()) != null)
+            if (speakerRepository.findSpeakerByEmailOrUserName(user.getEmail(), user.getUserName()) != null)
                 return false;
         } else if (user instanceof Organizer) {
-            if (organizerRepository.findOrganizerByEmailAndUserName(user.getEmail(), user.getUserName()) != null)
+            if (organizerRepository.findOrganizerByEmailOrUserName(user.getEmail(), user.getUserName()) != null)
                 return false;
         }
 

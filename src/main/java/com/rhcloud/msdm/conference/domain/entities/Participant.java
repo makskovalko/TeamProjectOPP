@@ -1,5 +1,7 @@
 package com.rhcloud.msdm.conference.domain.entities;
 
+import org.apache.commons.codec.digest.DigestUtils;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Date;
@@ -12,6 +14,18 @@ public class Participant extends User {
     public Participant() {
         this.confirmationKey = generateConfirmKey();
         this.active = 0;
+    }
+
+    public Participant(User user) {
+        this.confirmationKey = generateConfirmKey();
+        this.active = 0;
+        this.firstName = user.getFirstName();
+        this.lastName = user.getLastName();
+        this.userName = user.getUserName();
+        this.password = user.getPassword();
+        this.email = user.getEmail();
+        this.phoneNumber = user.getPhoneNumber();
+        this.dateOfBirth = user.getDateOfBirth();
     }
 
     @Id
@@ -58,6 +72,9 @@ public class Participant extends User {
 
     @Column(name = "confirmation_key", length = 10)
     private String confirmationKey;
+
+    @Transient
+    private String userType;
 
     @ManyToMany(mappedBy = "participants")
     private List<Conference> conferences = new ArrayList<Conference>();
@@ -115,7 +132,7 @@ public class Participant extends User {
     }
 
     public void setPassword(String password) {
-        this.password = password;
+        this.password = DigestUtils.md5Hex(password);
     }
 
     public String getEmail() {
@@ -166,6 +183,14 @@ public class Participant extends User {
         this.profileImage = profileImage;
     }
 
+    public String getUserType() {
+        return userType;
+    }
+
+    public void setUserType(String userType) {
+        this.userType = userType;
+    }
+
     public Date getDateOfBirth() {
         return dateOfBirth;
     }
@@ -184,6 +209,12 @@ public class Participant extends User {
 
     public String getConfirmURL() {
         return "http://localhost:8080/confirm_email/participant/" + userName + "/" + confirmationKey;
+    }
+
+    @Override
+    public String toString() {
+        return String.format("[\n\tusername: %s\n\tpassword: %s\n\tfirstName: %s\n\tlastName: %s\n\te-mail: %s\n\tphoneNumber: %s\n]",
+                userName, password, firstName, lastName, email, phoneNumber);
     }
 
 }

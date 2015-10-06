@@ -14,6 +14,9 @@
         ::-webkit-scrollbar {
             display: none;
         }
+        .userType {
+            margin-top: 0;
+        }
     </style>
 </head>
 <body>
@@ -22,8 +25,10 @@
     <div class="nav-wrapper container">
         <a id="logo-container" href="#" class="brand-logo">Conference System</a>
         <ul class="right hide-on-med-and-down">
-            <li><a href="#registration_form" class="modal-trigger"><i class="material-icons left">perm_identity</i>Регистрация</a></li>
-            <li><a href="#auth_form" class="modal-trigger"><i class="material-icons left">power_settings_new</i>Войти</a></li>
+            <div th:if="${session.user == null}">
+                <li><a href="#registration_form" class="modal-trigger"><i class="material-icons left">perm_identity</i>Регистрация</a></li>
+                <li><a href="#auth_form" class="modal-trigger"><i class="material-icons left">power_settings_new</i>Войти</a></li>
+            </div>
         </ul>
 
         <ul id="nav-mobile" class="side-nav">
@@ -202,14 +207,29 @@
                         <input id="phone_number" name="phone_number" type="text" class="validate" placeholder="Введите свою номер телефона" required="required" />
                     </div>
                 </div>
+
+                <div class="row">
+                    <div class="input-field col s12 m6">
+                        <i class="material-icons prefix">email</i>
+                        <input id="date_of_birth" name="v" type="date" class="validate" placeholder="Дата рождения" required="required" />
+                    </div>
+                    <div class="input-field col s12 m6 userType">
+                        <select name="userType" class="input-field col s12 m12" id="userType">
+                            <option name="participant" value="participant">Участник</option>
+                            <option name="organizer" value="organizer">Организатор</option>
+                            <option name="speaker" value="speaker">Спикер</option>
+                        </select>
+                        <label>Зарегистрироваться как</label>
+                    </div>
+                </div>
+                <div class="modal-footer" id="modal-footer" style="margin-top: -45px;">
+                    <button class="btn waves-effect waves-light" type="submit" name="action" onclick="userManager.signUp()">Отправить
+                        <i class="material-icons right">send</i>
+                    </button>
+                    <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat" onclick="userManager.cancel()">Отмена</a>
+                </div>
             </form>
         </div>
-    </div>
-    <div class="modal-footer">
-        <button class="btn waves-effect waves-light" type="submit" name="action">Отправить
-            <i class="material-icons right">send</i>
-        </button>
-        <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Отмена</a>
     </div>
 </div>
 
@@ -225,23 +245,23 @@
                 <div class="row">
                     <div class="input-field col s12 m12">
                         <i class="material-icons prefix">input</i>
-                        <input placeholder="Введите логин" name="username_login" id="username_login" type="text" class="validate" required="required" />
+                        <input placeholder="Введите логин" name="username_signIn" id="username_signIn" type="text" class="validate" required="required" />
                     </div>
                 </div>
 
                 <div class="row">
                     <div class="input-field col s12 m12">
                         <i class="material-icons prefix">vpn_key</i>
-                        <input id="password_login" name="password_login" type="password" class="validate" placeholder="Введите пароль" required="required" />
+                        <input id="password_signIn" name="password_signIn" type="password" class="validate" placeholder="Введите пароль" required="required" />
                     </div>
                 </div>
 
                 <div class="row">
                     <div class="input-field col s12 m12">
-                        <select>
-                            <option value="participant">Участник</option>
-                            <option value="organizer">Организатор</option>
-                            <option value="speaker">Спикер</option>
+                        <select name="userTypeSignIn" id="userTypeSignIn">
+                            <option name="participant" value="participant">Участник</option>
+                            <option name="organizer" value="organizer">Организатор</option>
+                            <option name="speaker" value="speaker">Спикер</option>
                         </select>
                         <label>Войти как</label>
                     </div>
@@ -251,7 +271,7 @@
         </div>
     </div>
     <div class="modal-footer">
-        <button class="btn waves-effect waves-light" type="submit" name="action">
+        <button class="btn waves-effect waves-light" type="submit" name="action" onclick="userManager.signIn()">
             <i class="material-icons left">power_settings_new</i>Войти
         </button>
         <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Отмена</a>
@@ -270,6 +290,6 @@
         $('select').material_select();
     });
 </script>
-
+<script type="text/javascript" src="../../resources/js/App/userManager.js"></script>
 </body>
 </html>

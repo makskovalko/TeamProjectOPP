@@ -8,6 +8,7 @@ import com.rhcloud.msdm.conference.repository.OrganizerRepository;
 import com.rhcloud.msdm.conference.repository.ParticipantRepository;
 import com.rhcloud.msdm.conference.repository.SpeakerRepository;
 import com.rhcloud.msdm.conference.service.Interfaces.Authorization;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -28,11 +29,13 @@ public class AuthorizationService implements Authorization {
     public User authorizeUser(User user) {
         if (validateData(user)) {
             if (user instanceof Participant)
-                return participantRepository.findParticipantByEmailAndUserName(user.getEmail(), user.getUserName());
+                return participantRepository.findParticipantByUserNameAndPassword(user.getUserName(), user.getPassword());
             else if (user instanceof Speaker)
-                return speakerRepository.findSpeakerByEmailAndUserName(user.getEmail(), user.getUserName());
+                return speakerRepository.findSpeakerByUserNameAndPassword(user.getUserName(),
+                                                     DigestUtils.md5Hex(user.getPassword()));
             else if (user instanceof Organizer)
-                return organizerRepository.findOrganizerByEmailAndUserName(user.getEmail(), user.getUserName());
+                return organizerRepository.findOrganizerByUserNameAndPassword(user.getUserName(),
+                                                         DigestUtils.md5Hex(user.getPassword()));
         }
         return null;
     }

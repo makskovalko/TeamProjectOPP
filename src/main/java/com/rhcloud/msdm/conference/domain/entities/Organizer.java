@@ -1,8 +1,11 @@
 package com.rhcloud.msdm.conference.domain.entities;
 
 
+import org.apache.commons.codec.digest.DigestUtils;
+
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -12,6 +15,18 @@ public class Organizer extends User {
     public Organizer() {
         this.confirmationKey = generateConfirmKey();
         this.active = 0;
+    }
+
+    public Organizer(User user) {
+        this.confirmationKey = generateConfirmKey();
+        this.active = 0;
+        this.firstName = user.getFirstName();
+        this.lastName = user.getLastName();
+        this.userName = user.getUserName();
+        this.password = user.getPassword();
+        this.email = user.getEmail();
+        this.phoneNumber = user.getPhoneNumber();
+        this.dateOfBirth = user.getDateOfBirth();
     }
 
     @Id
@@ -45,6 +60,13 @@ public class Organizer extends User {
 
     @Column(name = "confirmation_key", length = 10)
     private String confirmationKey;
+
+    @Transient
+    private String userType;
+
+    @Column(name = "date_of_birth")
+    @Temporal(value = TemporalType.DATE)
+    private Date dateOfBirth;
 
     @OneToMany(cascade = { CascadeType.ALL, CascadeType.PERSIST })
     @JoinColumn(name = "conference_id")
@@ -87,7 +109,7 @@ public class Organizer extends User {
     }
 
     public void setPassword(String password) {
-        this.password = password;
+        this.password = DigestUtils.md5Hex(password);
     }
 
     public String getFirstName() {
@@ -130,6 +152,24 @@ public class Organizer extends User {
         this.profileImage = profileImage;
     }
 
+    public String getUserType() {
+        return userType;
+    }
+
+    public void setUserType(String userType) {
+        this.userType = userType;
+    }
+
+    @Override
+    public Date getDateOfBirth() {
+        return dateOfBirth;
+    }
+
+    @Override
+    public void setDateOfBirth(Date dateOfBirth) {
+        this.dateOfBirth = dateOfBirth;
+    }
+
     public List<Conference> getConferences() {
         return conferences;
     }
@@ -140,6 +180,12 @@ public class Organizer extends User {
 
     public String getConfirmURL() {
         return "http://localhost:8080/confirm_email/organizer/" + userName + "/" + confirmationKey;
+    }
+
+    @Override
+    public String toString() {
+        return String.format("[\n\tusername: %s\n\tpassword: %s\n\tfirstName: %s\n\tlastName: %s\n\te-mail: %s\n\tphoneNumber: %s\n]",
+                userName, password, firstName, lastName, email, phoneNumber);
     }
 
 }

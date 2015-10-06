@@ -1,12 +1,26 @@
 package com.rhcloud.msdm.conference.domain.entities;
 
+import org.apache.commons.codec.digest.DigestUtils;
+
+import java.util.Date;
+
 //Not Entity
-public abstract class User {
+public class User {
 
     public User() {}
 
     private Integer id;
-    private String firstName, lastName, userName, password, email, phoneNumber, profileImage;
+    private String firstName;
+    private String lastName;
+    private String userName;
+    private String password;
+    private String email;
+    private String phoneNumber;
+    private String profileImage;
+    private String userType;
+    private String confirmURL;
+
+    private Date dateOfBirth;
 
     public Integer getId() {
         return id;
@@ -29,7 +43,7 @@ public abstract class User {
     }
 
     public void setPassword(String password) {
-        this.password = password;
+        this.password = DigestUtils.md5Hex(password);
     }
 
     public String getFirstName() {
@@ -72,6 +86,30 @@ public abstract class User {
         this.profileImage = profileImage;
     }
 
+    public String getUserType() {
+        return userType;
+    }
+
+    public void setUserType(String userType) {
+        this.userType = userType;
+    }
+
+    public String getConfirmURL() {
+        return confirmURL;
+    }
+
+    public void setConfirmURL(String confirmUrl) {
+        this.confirmURL = confirmUrl;
+    }
+
+    public Date getDateOfBirth() {
+        return dateOfBirth;
+    }
+
+    public void setDateOfBirth(Date dateOfBirth) {
+        this.dateOfBirth = dateOfBirth;
+    }
+
     public String generateConfirmKey() {
         String generatedKey = "";
         StringBuilder symbols = new StringBuilder();
@@ -83,5 +121,11 @@ public abstract class User {
         for (int i = 0; i < 10; i++) generatedKey += symbols.charAt((int)(Math.random() * symbols.length()));
 
         return generatedKey;
+    }
+
+    @Override
+    public String toString() {
+        return String.format("[\n\tusername: %s\n\tpassword: %s\n\tfirstName: %s\n\tlastName: %s\n\te-mail: %s\n\tphoneNumber: %s\n]",
+                userName, password, firstName, lastName, email, phoneNumber);
     }
 }

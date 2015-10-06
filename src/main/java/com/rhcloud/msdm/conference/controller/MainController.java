@@ -1,8 +1,7 @@
 package com.rhcloud.msdm.conference.controller;
 
-import com.rhcloud.msdm.conference.domain.entities.Organizer;
-import com.rhcloud.msdm.conference.domain.entities.Participant;
-import com.rhcloud.msdm.conference.domain.entities.Speaker;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.rhcloud.msdm.conference.domain.UserFactory;
 import com.rhcloud.msdm.conference.domain.entities.User;
 import com.rhcloud.msdm.conference.service.Impl.AuthorizationService;
 import com.rhcloud.msdm.conference.service.Impl.RegistrationService;
@@ -13,13 +12,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
 
 @Controller
 public class MainController {
@@ -39,43 +36,31 @@ public class MainController {
         return "index";
     }
 
-    //Mock
-    @RequestMapping(value = "/signUp", method = RequestMethod.GET)
+    @RequestMapping(value = "/signUp", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity<String> signUp(HttpServletRequest request) {
+    public ResponseEntity<String> signUp(@RequestBody String jsonUser){
 
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add("Content-type", "text/plain;charset=UTF-8");
 
-        Organizer organizer = new Organizer();
-        organizer.setUserName("Test");
-        organizer.setPassword("123");
-        organizer.setEmail("test@gmail.com");
-        organizer.setFirstName("Test");
-        organizer.setLastName("Testov");
+        ObjectMapper mapper = new ObjectMapper();
+        User user = null;
+        try {
+            user = mapper.readValue(jsonUser, User.class);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
-        Participant participant = new Participant();
-        participant.setUserName("makskovalko");
-        participant.setPassword("7777777");
-        participant.setEmail("makskovalko@gmail.com");
-        participant.setFirstName("Maxim");
-        participant.setLastName("Kovalko");
+        User rightUser = user != null ? UserFactory.getUserByType(user) : null;
 
-        Speaker speaker = new Speaker();
-        speaker.setUserName("Test1");
-        speaker.setPassword("123");
-        speaker.setEmail("test1@gmail.com");
-        speaker.setFirstName("Test");
-        speaker.setLastName("Testov");
-
-        if (registrationService.checkData(participant)) {
-            mailSender.sendMail(participant.getEmail(), "Conference Registration", participant.getConfirmURL());
+        if (rightUser != null && registrationService.checkData(rightUser)) {
+            mailSender.sendMail(rightUser.getEmail(), "Conference Registration", rightUser.getConfirmURL());
             return new ResponseEntity<String>(
                     "Подтвердите свою регистрацию, перейдя по ссылке в письме, высланном Вам на e-mail", httpHeaders, HttpStatus.OK
             );
         }
         else return new ResponseEntity<String>(
-                "Ошибка регистрации! Пользователь с такими данными уже зарегистрирован!", httpHeaders, HttpStatus.OK
+                "Ошибка регистрации! Пользователь с таким логином или e-mail адресом уже зарегистрирован!", httpHeaders, HttpStatus.OK
         );
     }
 
@@ -91,24 +76,34 @@ public class MainController {
         if (registrationService.confirmRegistration(user, userName, confirmKey))
             return new ResponseEntity<String>("Регистрация прошла успешно!", httpHeaders, HttpStatus.OK);
         else return new ResponseEntity<String>("Ошибка регистрации!", httpHeaders, HttpStatus.OK);
-
     }
 
 
-    //Mock
-    @RequestMapping(value = "/signIn", method = RequestMethod.GET)
+    @RequestMapping(value = "/signIn", method = RequestMethod.POST)
     @ResponseBody
-    public String signIn(HttpServletRequest request) {
+    public ResponseEntity<String> signIn(@RequestBody String jsonUser, HttpServletRequest request) {
 
-        Speaker speaker = new Speaker();
-        speaker.setUserName("Test1");
-        speaker.setPassword("123");
-        speaker.setEmail("test1@gmail.com");
-        speaker.setFirstName("Test");
-        speaker.setLastName("Testov");
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.add("Content-type", "text/plain;charset=UTF-8");
 
-        if (authorizationService.authorizeUser(speaker) != null) request.getSession().setAttribute("user", speaker);
-        return ((User) request.getSession().getAttribute("user")).getUserName();
+        ObjectMapper mapper = new ObjectMapper();
+        User user = null;
+        try {
+            user = mapper.readValue(jsonUser, User.class);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        User rightUser = user != null ? UserFactory.getUserByType(user) : null;
+
+        if (rightUser != null && authorizationService.authorizeUser(rightUser) != null) {
+            User authUser = authorizationService.authorizeUser(rightUser);
+            request.getSession().setAttribute("user", authUser);
+            return new ResponseEntity<String>(
+                    "Добро пожаловать, " + ((User) request.getSession().getAttribute("user")).getUserName(), httpHeaders, HttpStatus.OK
+            );
+        }
+        return new ResponseEntity<String>("Ошибка регистрации!", httpHeaders, HttpStatus.OK);
     }
 
 

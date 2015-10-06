@@ -8,7 +8,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 
 public interface ParticipantRepository extends JpaRepository<Participant, Integer> {
-    public Participant findParticipantByEmailAndUserName(String email, String userName);
+    public Participant findParticipantByEmailOrUserName(String email, String userName);
+    public Participant findParticipantByUserNameAndPassword(String userName, String password);
 
     @Modifying
     @Transactional
