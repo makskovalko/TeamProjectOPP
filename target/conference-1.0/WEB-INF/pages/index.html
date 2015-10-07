@@ -25,15 +25,29 @@
     <div class="nav-wrapper container">
         <a id="logo-container" href="#" class="brand-logo">Conference System</a>
         <ul class="right hide-on-med-and-down">
-            <div th:if="${session.user == null}">
+            <div th:if="${ session.user == null }">
                 <li><a href="#registration_form" class="modal-trigger"><i class="material-icons left">perm_identity</i>Регистрация</a></li>
                 <li><a href="#auth_form" class="modal-trigger"><i class="material-icons left">power_settings_new</i>Войти</a></li>
+            </div>
+            <div th:if="${session.user != null}">
+                <li><a th:href="'/profile/' + ${session.user.userType}" th:text="'Добро пожаловать, ' + ${session.user.userName} + '!'">Welcome<i class="material-icons right">perm_identity</i></a></li>
+                <li><a href="/logOut"><i class="material-icons left">power_settings_new</i>Выйти</a></li>
             </div>
         </ul>
 
         <ul id="nav-mobile" class="side-nav">
-            <li><a href="#registration_form" class="modal-trigger">Регистрация</a></li>
-            <li><a href="#auth_form" class="modal-trigger">Войти</a></li>
+            <div th:if="${ session.user == null }">
+                <li><a href="#registration_form" class="modal-trigger">Регистрация</a></li>
+                <li><a href="#auth_form" class="modal-trigger">Войти</a></li>
+            </div>
+            <div th:if="${session.user != null}">
+                <div class="row">
+                    <li><a th:href="'/profile/' + ${session.user.userType}" th:text="'Добро пожаловать, ' + ${session.user.userName} + '!'">Welcome<i class="material-icons right">perm_identity</i></a></li>
+                </div>
+                <div class="row">
+                    <li><a href="/logOut"><i class="material-icons left">power_settings_new</i>Выйти</a></li>
+                </div>
+            </div>
         </ul>
         <a href="#" data-activates="nav-mobile" class="button-collapse"><i class="material-icons">menu</i></a>
     </div>
@@ -283,6 +297,7 @@
 <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
 <script src="../../resources/js/Libs/materialize.js" th:src="'resources/js/Libs/materialize.js'"></script>
 <script src="../../resources/js/Libs/init.js" th:src="'resources/js/Libs/init.js'"></script>
+<script src="../../resources/js/App/userManager.js" th:src="'resources/js/App/userManager.js'"></script>
 
 <script type="text/javascript">
     $(document).ready(function() {
@@ -290,6 +305,6 @@
         $('select').material_select();
     });
 </script>
-<script type="text/javascript" src="../../resources/js/App/userManager.js"></script>
+
 </body>
 </html>

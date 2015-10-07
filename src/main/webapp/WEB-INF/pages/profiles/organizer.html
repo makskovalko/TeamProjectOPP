@@ -1,10 +1,294 @@
 <!DOCTYPE html>
-<html>
-<head lang="en">
-    <meta charset="UTF-8">
-    <title></title>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no"/>
+    <title>Organizer Profile</title>
+
+    <!-- CSS  -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons"  rel="stylesheet" />
+    <link href="../../../resources/css/materialize.css" th:href="'../resources/css/materialize.css'" type="text/css" rel="stylesheet" media="screen,projection"/>
+    <link href="../../../resources/css/style.css" th:href="'../resources/css/style.css'" type="text/css" rel="stylesheet" media="screen,projection"/>
+
+    <style>
+        /*body {
+            background: url(../../../resources/img/conference.jpg);
+            background-size: cover;
+        }*/
+
+        .collapsible-header {
+            background: #311b92;
+            color: white;
+        }
+
+        .tabs {
+            color: #4a148c;
+        }
+    </style>
+
 </head>
-<body>
+<body ng-app="app">
+    <nav class="white" role="navigation">
+        <div class="nav-wrapper container">
+            <a id="logo-container" href="#" class="brand-logo">Conference System</a>
+            <ul class="right hide-on-med-and-down">
+                <div th:if="${session.user != null}">
+                    <li><a th:href="'/profile/' + ${session.user.userType}" th:text="'Добро пожаловать, ' + ${session.user.userName} + '!'">Welcome<i class="material-icons right">perm_identity</i></a></li>
+                    <li><a href="/logOut"><i class="material-icons left">power_settings_new</i>Выйти</a></li>
+                </div>
+            </ul>
+
+            <ul id="nav-mobile" class="side-nav">
+                <div th:if="${session.user != null}">
+                    <div class="row">
+                        <li><a th:href="'/profile/' + ${session.user.userType}" th:text="'Добро пожаловать, ' + ${session.user.userName} + '!'">Welcome<i class="material-icons right">perm_identity</i></a></li>
+                    </div>
+                    <div class="row">
+                        <li><a href="/logOut"><i class="material-icons left">power_settings_new</i>Выйти</a></li>
+                    </div>
+                </div>
+            </ul>
+            <a href="#" data-activates="nav-mobile" class="button-collapse"><i class="material-icons">menu</i></a>
+        </div>
+    </nav>
+
+        <div class="row" ng-controller="organizerProfileController as organizerProfileController">
+            <div class="col s12 m3">
+
+                <div class="card">
+                    <div class="card-image waves-effect waves-block waves-light">
+                        <img class="activator" src="../../../resources/img/avatar.jpg" />
+                    </div>
+                    <div class="card-content">
+                        <span class="card-title activator grey-text text-darken-4" th:inline="text">
+                            [[${session.user.firstName + ' ' + session.user.lastName}]]
+                            <i class="material-icons right">more_vert</i>
+                        </span>
+                        <div class="row">
+                            <ul class="collapsible" data-collapsible="expandable">
+                                <li>
+                                    <div class="collapsible-header active">Контактные данные</div>
+                                    <div class="collapsible-body">
+                                        <ul class="collection">
+                                            <i class="material-icons left">phone</i><li class="collection-item" th:text="${session.user.phoneNumber}"></li>
+                                            <i class="material-icons left">email</i><li class="collection-item" th:text="${session.user.email}"></li>
+                                        </ul>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+
+                    <div class="card-reveal">
+                        <span class="card-title grey-text text-darken-4">Редактировать профиль<i class="material-icons right">close</i></span>
+                        <div class="row">
+                            <form class="col s12">
+                                <div class="row" style="display:none;">
+                                    <div class="input-field col s12">
+                                        <input id="userName" type="text" class="validate" th:value="${session.user.userName}" />
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="input-field col s12">
+                                        <input id="firstName" type="text" class="validate" th:value="${session.user.firstName}" />
+                                        <label for="firstName" data-error="wrong" data-success="right">Имя</label>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="input-field col s12">
+                                        <input id="lastName" type="text" class="validate" th:value="${session.user.lastName}" />
+                                        <label for="lastName" data-error="wrong" data-success="right">Фамилия</label>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="input-field col s12">
+                                        <input id="email" type="email" class="validate" th:value="${session.user.email}" />
+                                        <label for="email" data-error="wrong" data-success="right">E-mail</label>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="input-field col s12">
+                                        <input id="phoneNumber" type="tel" class="validate" th:value="${session.user.phoneNumber}" />
+                                        <label for="phoneNumber" data-error="wrong" data-success="right">Номер телефона</label>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="input-field col s12">
+                                        <input id="dateOfBirth" type="date" class="validate" th:value="${session.user.dateOfBirth}" />
+                                        <label class="active" for="dateOfBirth">Дата рождения</label>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="input-field col s12">
+                                        <button class="btn waves-effect waves-light" type="button" name="action" onclick="organizerActions.saveData()">Сохранить
+                                            <i class="material-icons left">done</i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col s12 m7" style="margin-top: 10px;">
+                <div class="row">
+
+                    <div class="row">
+                        <div class="col s11">
+                            <ul class="tabs">
+                                <li class="tab col s12 m4"><a class="active" href="#test1">Все конференции</a></li>
+                                <li class="tab col s12 m4"><a href="#create_conference">Создать конференцию</a></li>
+                                <li class="tab col s12 m4"><a href="#test3">Управление конференциями</a></li>
+                            </ul>
+                        </div>
+                        <div id="test1" class="col s12">
+                            <div class="row">
+                                <div class="input-field col s9">
+                                    <input id="search" type="text" class="validate" />
+                                    <label for="search">Найти конференцию</label>
+                                </div>
+                                <div class="col s3">
+                                    <button style="margin-top: 30px;" class="btn waves-effect waves-light" type="submit" name="action">Найти</button>
+                                </div>
+                            </div>
+                            <div class="col s11">
+                                <div class="card small">
+                                    <h5>Conference name</h5>
+                                    <p>Conference description</p>
+                                </div>
+
+                                <div class="card small">
+                                    <h5>Conference name</h5>
+                                    <p>Conference description</p>
+                                </div>
+
+                                <div class="card small">
+                                    <h5>Conference name</h5>
+                                    <p>Conference description</p>
+                                </div>
+
+                                <div class="card small">
+                                    <h5>Conference name</h5>
+                                    <p>Conference description</p>
+                                </div>
+
+                                <div class="card small">
+                                    <h5>Conference name</h5>
+                                    <p>Conference description</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="create_conference" class="col s12" style="margin-top: 25px;">
+                            <div class="row">
+                                <div class="card">
+                                    <form class="col s12">
+                                        <div class="row">
+                                            <div class="input-field col s12">
+                                                <input id="conference_name" type="text" class="validate" />
+                                                <label for="conference_name" data-error="wrong" data-success="right">Название конференции</label>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="input-field col s12">
+                                                <input id="country" type="text" class="validate" />
+                                                <label for="country" data-error="wrong" data-success="right">Страна</label>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="input-field col s12">
+                                                <input id="city" type="text" class="validate" />
+                                                <label for="city" data-error="wrong" data-success="right">Город</label>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="input-field col s12">
+                                                <input id="date" type="text" class="validate" />
+                                                <label for="date" data-error="wrong" data-success="right">Дата проведения</label>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="input-field col s12">
+                                                <input id="participant-limit" type="text" class="validate" />
+                                                <label for="participant-limit" data-error="wrong" data-success="right">Максимальное количество участников</label>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="input-field col s12 m6 userType">
+                                                <select name="userType" class="input-field col s12 m12" id="userType">
+                                                    <option name="participant" value="participant">Участник</option>
+                                                    <option name="organizer" value="organizer">Организатор</option>
+                                                    <option name="speaker" value="speaker">Спикер</option>
+                                                </select>
+                                                <label>Зарегистрироваться как</label>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="input-field offset-s6 col s6">
+                                                <button class="btn">Отмена</button>
+                                                <button class="btn">Создать</button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="test3" class="col s12">Test 3</div>
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="col s12 m2" style="margin-top: 80px;">
+                <div class="row">
+                    <input id="country_filter" type="text" class="validate" placeholder="Страна" />
+                    <input id="city_filter-limit" type="text" class="validate" placeholder="Город" />
+                    <a class="waves-effect waves-light btn"><i class="material-icons left">cloud</i>Найти</a>
+                </div>
+            </div>
+        </div>
+
+<!--  Scripts-->
+<script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+<script src="../../../resources/js/Libs/materialize.js" th:src="'../resources/js/Libs/materialize.js'"></script>
+<script src="../../../resources/js/Libs/init.js" th:src="'../resources/js/Libs/init.js'"></script>
+<script src="../../../resources/js/Libs/angular.min.js" th:src="'../resources/js/Libs/angular.min.js'"></script>
+<script src="../../../resources/js/App/organizerActions.js" th:src="'../resources/js/App/organizerActions.js'"></script>
+
+<script type="text/javascript">
+    $(document).ready(function(){
+        $('.collapsible').collapsible({
+            accordion : false // A setting that changes the collapsible behavior to expandable instead of the default accordion style
+        });
+        $('ul.tabs').tabs();
+    });
+</script>
+
+<script type="text/javascript">
+
+    var app = angular.module('app', []);
+
+    app.controller('organizerProfileController', function($scope) {
+
+    });
+
+</script>
 
 </body>
 </html>

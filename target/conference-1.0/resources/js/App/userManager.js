@@ -48,7 +48,7 @@ var userManager = (function() {
         user.password = $("#password_signIn").val();
         user.userType = $("#userTypeSignIn").val();
 
-        alert(JSON.stringify(user));
+        //alert(JSON.stringify(user));
 
         $.ajax({
             type: 'POST',
@@ -56,8 +56,10 @@ var userManager = (function() {
             url: '/signIn',
             contentType: 'application/json',
             success: function(data) {
-                /*window.location.href = '/';*/
-                alert(data);
+                if (data == "participant") window.location.href = '/profile/participant';
+                else if (data == "organizer") window.location.href = '/profile/organizer';
+                else if (data == "speaker") window.location.href = '/profile/speaker';
+                else alert(data);
             }
         });
 
