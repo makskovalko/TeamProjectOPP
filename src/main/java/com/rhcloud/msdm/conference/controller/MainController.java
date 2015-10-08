@@ -54,7 +54,7 @@ public class MainController {
         User rightUser = user != null ? UserFactory.getUserByType(user) : null;
 
         if (rightUser != null && registrationService.checkData(rightUser)) {
-            mailSender.sendMail(rightUser.getEmail(), "Conference Registration", rightUser.getConfirmURL());
+            mailSender.sendMail(rightUser.getEmail(), "ParticipantActions Registration", rightUser.getConfirmURL());
             return new ResponseEntity<String>(
                     "Подтвердите свою регистрацию, перейдя по ссылке в письме, высланном Вам на e-mail", httpHeaders, HttpStatus.OK
             );
@@ -104,18 +104,5 @@ public class MainController {
             );
         }
         return new ResponseEntity<String>("Ошибка регистрации!", httpHeaders, HttpStatus.OK);
-    }
-
-
-    @RequestMapping(value = "/sendMail", method = RequestMethod.GET)
-    public String sendMail() {
-
-        String to = "makskovalko@gmail.com";
-        String subject = "MSDM";
-        String body = "Hello!!!";
-
-        mailSender.sendMail(to, subject, body);
-
-        return "index";
     }
 }

@@ -74,10 +74,38 @@ var userManager = (function() {
         $("#userType").val("");
     }
 
+    function editParticipantInfo(){
+
+        $("form").submit(function(e) {
+            e.preventDefault();
+            return false;
+        });
+
+        var user = {};
+        user.userName = "alex";
+        user.firstName = "alexandr";
+        user.lastName = "talanov";
+        user.password = "0000";
+        user.email = "a@g.com";
+        user.phoneNumber  = "+38066";
+
+        $.ajax({
+            type: 'POST',
+            data: JSON.stringify(user),
+            url: '/participant/edit',
+            contentType: 'application/json',
+            success: function(data) {
+                alert(data);
+            }
+        });
+
+    }
+
     return {
         signUp: signUp,
         cancel: cancel,
-        signIn: signIn
+        signIn: signIn,
+        editParticipantInfo: editParticipantInfo
     }
 
 })();
