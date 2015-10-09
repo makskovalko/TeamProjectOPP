@@ -1,7 +1,7 @@
-var userManager = (function() {
+var userManager = (function () {
 
     function signUp() {
-        $("form").submit(function(e) {
+        $("form").submit(function (e) {
             e.preventDefault();
             return false;
         });
@@ -24,7 +24,7 @@ var userManager = (function() {
                 data: JSON.stringify(user),
                 url: '/signUp',
                 contentType: 'application/json',
-                success: function(data) {
+                success: function (data) {
                     /*window.location.href = '/';*/
                     alert(data);
                 }
@@ -37,7 +37,7 @@ var userManager = (function() {
     }
 
     function signIn() {
-        $("form").submit(function(e) {
+        $("form").submit(function (e) {
             e.preventDefault();
             return false;
         });
@@ -48,16 +48,18 @@ var userManager = (function() {
         user.password = $("#password_signIn").val();
         user.userType = $("#userTypeSignIn").val();
 
-        alert(JSON.stringify(user));
+        //alert(JSON.stringify(user));
 
         $.ajax({
             type: 'POST',
             data: JSON.stringify(user),
             url: '/signIn',
             contentType: 'application/json',
-            success: function(data) {
-                /*window.location.href = '/';*/
-                alert(data);
+            success: function (data) {
+                if (data == "participant") window.location.href = '/profile/participant';
+                else if (data == "organizer") window.location.href = '/profile/organizer';
+                else if (data == "speaker") window.location.href = '/profile/speaker';
+                else alert(data);
             }
         });
 
@@ -74,38 +76,56 @@ var userManager = (function() {
         $("#userType").val("");
     }
 
-    function editParticipantInfo(){
+    $('#profileImage').on("change", function () {
 
-        $("form").submit(function(e) {
-            e.preventDefault();
-            return false;
-        });
+        var data = new FormData();
+        var file = this.files.item(0);
+        data.append("file", file);
 
-        var user = {};
-        user.userName = "alex";
-        user.firstName = "alexandr";
-        user.lastName = "talanov";
-        user.password = "0000";
-        user.email = "a@g.com";
-        user.phoneNumber  = "+38066";
+        var progress = $("#progressUploadingImage");
+        progress.append(
+            "<div class='progress'>" +
+            "<div class='indeterminate'></div>" +
+            "</div>"
+        );
 
         $.ajax({
+            url: '/upload/profile/img',
             type: 'POST',
-            data: JSON.stringify(user),
-            url: '/participant/edit',
-            contentType: 'application/json',
-            success: function(data) {
-                alert(data);
+            data: data,
+            cache: false,
+            processData: false,
+            contentType: false,
+            success: function (response) {
+                $(".progress").remove();
+                dinamicViewImage(file);
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                console.log("Something wrong: " + textStatus);
             }
         });
+    });
 
+    function dinamicViewImage(file) {
+
+        var reader = new FileReader();
+
+        reader.onload = (function (theFile) {
+            return function (e) {
+
+                var profileImg = $("#profileImg");
+                profileImg.attr("src", e.target.result);
+                profileImg.attr("title", theFile.name);
+            };
+        })(file);
+
+        reader.readAsDataURL(file);
     }
 
     return {
         signUp: signUp,
         cancel: cancel,
-        signIn: signIn,
-        editParticipantInfo: editParticipantInfo
+        signIn: signIn
     }
 
 })();
