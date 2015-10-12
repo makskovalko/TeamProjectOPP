@@ -1,5 +1,7 @@
 package com.rhcloud.msdm.conference.domain.entities;
 
+import com.rhcloud.msdm.conference.domain.pojo.ConferenceJSON;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Date;
@@ -9,19 +11,36 @@ import java.util.List;
 @Table(name = "conference")
 public class Conference {
 
+    public Conference() {}
+
+    public Conference(ConferenceJSON conferenceJSON) {
+        this.name = conferenceJSON.getName();
+        this.country = conferenceJSON.getCountry();
+        this.city = conferenceJSON.getCity();
+        this.address = conferenceJSON.getAddress();
+        this.date = conferenceJSON.getDate();
+        this.participantLimit = conferenceJSON.getParticipantLimit();
+        this.description = conferenceJSON.getDescription();
+    }
+
     @Id
     @GeneratedValue
     @Column(name = "id")
     private Integer id;
 
     private Integer participantLimit, participantCount;
-    private String name, country, city, address;
+    private String name;
+    private String country;
+    private String city;
+    private String address;
+
+    private String description;
     private Date date;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne
     private Category category;
 
-    @ManyToOne(cascade = { CascadeType.ALL, CascadeType.PERSIST })
+    @ManyToOne
     private Organizer organizer;
 
     @ManyToMany(fetch = FetchType.LAZY, cascade = { CascadeType.ALL, CascadeType.PERSIST })
@@ -102,7 +121,7 @@ public class Conference {
         return participantLimit;
     }
 
-    public void setParticipantLimit(int participantLimit) {
+    public void setParticipantLimit(Integer participantLimit) {
         this.participantLimit = participantLimit;
     }
 
@@ -139,5 +158,12 @@ public class Conference {
         this.speakers = speakers;
     }
 
+    @Column(name = "description", columnDefinition = "TEXT")
+    public String getDescription() {
+        return description;
+    }
 
+    public void setDescription(String description) {
+        this.description = description;
+    }
 }

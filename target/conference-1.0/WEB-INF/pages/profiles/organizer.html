@@ -25,10 +25,14 @@
         .tabs {
             color: #4a148c;
         }
+
+        #category {
+            overflow: scroll;
+        }
     </style>
 
 </head>
-<body ng-app="app">
+<body>
     <nav class="white" role="navigation">
         <div class="nav-wrapper container">
             <a id="logo-container" href="#" class="brand-logo">Conference System</a>
@@ -53,7 +57,7 @@
         </div>
     </nav>
 
-        <div class="row" ng-controller="organizerProfileController as organizerProfileController">
+        <div class="row">
             <div class="col s12 m3">
 
                 <div class="card">
@@ -143,47 +147,28 @@
                 <div class="row">
 
                     <div class="row">
+                        <div class="card">
                         <div class="col s11">
-                            <ul class="tabs">
+                            <ul class="tabs" style="display:block;">
                                 <li class="tab col s12 m4"><a class="active" href="#test1">Все конференции</a></li>
-                                <li class="tab col s12 m4"><a href="#create_conference">Создать конференцию</a></li>
-                                <li class="tab col s12 m4"><a href="#test3">Управление конференциями</a></li>
+                                <li class="tab col s12 m4"><a href="#create_conference">Создать</a></li>
+                                <li class="tab col s12 m4"><a href="#test3">Управление</a></li>
                             </ul>
                         </div>
                         <div id="test1" class="col s12">
                             <div class="row">
-                                <div class="input-field col s9">
+                                <div class="input-field col s8" style="margin-right: 7px;">
                                     <input id="search" type="text" class="validate" />
                                     <label for="search">Найти конференцию</label>
                                 </div>
                                 <div class="col s3">
-                                    <button style="margin-top: 30px;" class="btn waves-effect waves-light" type="submit" name="action">Найти</button>
+                                    <a class="waves-effect waves-light btn" style="margin-top: 30px;"><i class="material-icons left">search</i>Найти</a>
                                 </div>
                             </div>
                             <div class="col s11">
-                                <div class="card small">
-                                    <h5>Conference name</h5>
-                                    <p>Conference description</p>
-                                </div>
-
-                                <div class="card small">
-                                    <h5>Conference name</h5>
-                                    <p>Conference description</p>
-                                </div>
-
-                                <div class="card small">
-                                    <h5>Conference name</h5>
-                                    <p>Conference description</p>
-                                </div>
-
-                                <div class="card small">
-                                    <h5>Conference name</h5>
-                                    <p>Conference description</p>
-                                </div>
-
-                                <div class="card small">
-                                    <h5>Conference name</h5>
-                                    <p>Conference description</p>
+                                <div class="card small" th:each="conference : ${allConferences}">
+                                    <h5 th:text="${conference.name}">Conference name</h5>
+                                    <p th:text="${conference.description}">Conference description</p>
                                 </div>
                             </div>
                         </div>
@@ -215,20 +200,16 @@
 
                                         <div class="row">
                                             <div class="input-field col s12">
-                                                <input id="date" type="text" class="validate" />
-                                                <label for="date" data-error="wrong" data-success="right">Дата проведения</label>
+                                                <input id="address" type="text" class="validate" />
+                                                <label for="address" data-error="wrong" data-success="right">Адрес</label>
                                             </div>
                                         </div>
 
                                         <div class="row">
                                             <div class="input-field col s12">
-                                                <select>
-                                                    <option value="1">Option 1</option>
-                                                    <option value="2">Option 2</option>
-                                                    <option value="3">Option 3</option>
-                                                </select>
-                                                <label>Категория</label>
+                                                <input id="date" type="date" class="validate" placeholder="Дата проведения" />
                                             </div>
+                                            <label for="date" data-error="wrong" data-success="right">Дата проведения</label>
                                         </div>
 
                                         <div class="row">
@@ -239,9 +220,28 @@
                                         </div>
 
                                         <div class="row">
+                                            <div class="input-field col s12">
+                                                <select name="category" id="category">
+                                                    <option th:each="conference : ${conferenceCategories}" th:value="${conference.id}" th:text="${conference.name}"></option>
+                                                </select>
+                                                <label>Выберите тематику конференции</label>
+                                            </div>
+                                            <div class="input-field col s12" style="display:none;">
+                                                <input type="text" id="organizer_id" th:value="${session.user.id}" />
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="input-field col s12">
+                                                <textarea id="description" class="materialize-textarea"></textarea>
+                                                <label for="description">Описание конференции</label>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
                                             <div class="input-field offset-s6 col s6">
                                                 <button class="btn">Отмена</button>
-                                                <button class="btn">Создать</button>
+                                                <button class="btn" onclick="organizerActions.createConference()">Создать</button>
                                             </div>
                                         </div>
                                     </form>
@@ -249,17 +249,37 @@
                             </div>
                         </div>
 
-                        <div id="test3" class="col s12">Test 3</div>
+
+                        <div id="test3" class="col s12">
+                            <div class="row">
+                                <div class="col s11">
+                                    <div class="card small" th:each="conference : ${myCreatedConferences}">
+                                        <h5 th:text="${conference.name}">Conference name</h5>
+                                        <p th:text="${conference.description}">Conference description</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 
                     </div>
                 </div>
+                </div>
             </div>
 
-            <div class="col s12 m2">
-                <!--<div class="row">
-                    <a class="waves-effect waves-light btn"><i class="material-icons left">cloud</i>Создать конференцию</a>
-                    <a class="waves-effect waves-light btn"><i class="material-icons left">cloud</i>Мои конференции</a>
-                </div>-->
+            <div class="col s12 m2" style="margin-top: 10px;">
+                <div class="row">
+                    <div class="card" style="padding: 20px;">
+                        <form action="#">
+                            <input id="country_filter" type="text" class="validate" placeholder="Страна" />
+                            <input id="city_filter-limit" type="text" class="validate" placeholder="Город" />
+                            <p th:each="category : ${conferenceCategories}">
+                                <input type="checkbox" th:id="${category.id}" th:value="${category.id}" />
+                                <label th:for="${category.id}" th:text="${category.name}">Category</label>
+                            </p>
+                            <a class="waves-effect waves-light btn"><i class="material-icons left">search</i>Найти</a>
+                        </form>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -267,26 +287,15 @@
 <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
 <script src="../../../resources/js/Libs/materialize.js" th:src="'../resources/js/Libs/materialize.js'"></script>
 <script src="../../../resources/js/Libs/init.js" th:src="'../resources/js/Libs/init.js'"></script>
-<script src="../../../resources/js/Libs/angular.min.js" th:src="'../resources/js/Libs/angular.min.js'"></script>
 <script src="../../../resources/js/App/organizerActions.js" th:src="'../resources/js/App/organizerActions.js'"></script>
 
 <script type="text/javascript">
     $(document).ready(function(){
-        $('.collapsible').collapsible({
-            accordion : false // A setting that changes the collapsible behavior to expandable instead of the default accordion style
-        });
+        $('select').material_select();
         $('ul.tabs').tabs();
+        $('.tooltipped').tooltip({delay: 50});
+        $('#description').trigger('autoresize');
     });
-</script>
-
-<script type="text/javascript">
-
-    var app = angular.module('app', []);
-
-    app.controller('organizerProfileController', function($scope) {
-
-    });
-
 </script>
 
 </body>

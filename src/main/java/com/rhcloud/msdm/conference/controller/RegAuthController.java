@@ -66,7 +66,6 @@ public class RegAuthController {
         else return new ResponseEntity<String>("Ошибка регистрации!", httpHeaders, HttpStatus.OK);
     }
 
-
     @RequestMapping(value = "/signIn", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<String> signIn(@RequestBody User user, HttpServletRequest request) {

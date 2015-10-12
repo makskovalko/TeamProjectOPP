@@ -1,6 +1,5 @@
 package com.rhcloud.msdm.conference.domain.entities;
 
-
 import org.apache.commons.codec.digest.DigestUtils;
 
 import javax.persistence.*;
@@ -68,7 +67,7 @@ public class Organizer extends User {
     @Temporal(value = TemporalType.DATE)
     private Date dateOfBirth;
 
-    @OneToMany(cascade = { CascadeType.ALL, CascadeType.PERSIST })
+    @OneToMany
     @JoinColumn(name = "conference_id")
     private List<Conference> conferences = new ArrayList<Conference>();
 
