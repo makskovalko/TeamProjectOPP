@@ -9,8 +9,6 @@ import javax.servlet.http.HttpServletResponse;
 
 public class MainInterceptor extends HandlerInterceptorAdapter {
 
-    //ПРОВЕРКА ВСЕХ Upload - еров !!!
-
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         return super.preHandle(request, response, handler);

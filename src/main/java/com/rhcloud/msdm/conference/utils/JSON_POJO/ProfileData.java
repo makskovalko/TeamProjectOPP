@@ -178,4 +178,5 @@ public class ProfileData {
     public void setDateOfBirth(Date dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
     }
+
 }

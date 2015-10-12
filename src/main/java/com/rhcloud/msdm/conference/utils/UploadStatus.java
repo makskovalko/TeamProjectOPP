@@ -2,5 +2,5 @@ package com.rhcloud.msdm.conference.utils;
 
 
 public enum UploadStatus {
-    IO_ERROR, SUCCESS, MAXIMUM_UPLOAD_SIZE_EXCEEDED, FILE_IS_EMPTY
+    IO_ERROR, SUCCESS, MAXIMUM_UPLOAD_SIZE_EXCEEDED, FILE_IS_EMPTY, NOT_VALID_FORMAT_FILE
 }

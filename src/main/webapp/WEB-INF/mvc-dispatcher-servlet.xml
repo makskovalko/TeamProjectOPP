@@ -95,9 +95,24 @@
 
 
     <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver"
-          p:maxUploadSize="300000" />
+          p:maxUploadSize="${upload.maxUploadSize}"/>
 
-    <bean id="uploader" class="com.rhcloud.msdm.conference.utils.FileUploader"
-            c:pathToBufferDir="C:\Users\Alexandr\Desktop\NEW\TeamProjectOPP\target\conference-1.0\resources\ProfileImagesBufferDir" />
+    <bean id="fileUploaderService" class="com.rhcloud.msdm.conference.utils.FileUploader"
+          c:pathToBufferDir="${upload.pathToBufferDir}"
+          c:googleDriveService-ref="googleDriveService">
+        <constructor-arg name="allowedMimeTypes">
+            <list>
+                <value>.jpg</value>
+                <value>.png</value>
+                <value>.gif</value>
+            </list>
+        </constructor-arg>
+    </bean>
+
+    <bean id="googleDriveService" class="com.rhcloud.msdm.conference.utils.GoogleDriveService"
+          c:serviceAccountId="${google.drive.serviceAccountId}"
+          c:pathToServiceAccountPrivateKeyFromP12File="${google.drive.pathToServiceAccountPrivateKeyFromP12File}"
+          c:pathToBufferDir="${upload.pathToBufferDir}"
+          c:appName="${google.drive.appName}"/>
 
 </beans>

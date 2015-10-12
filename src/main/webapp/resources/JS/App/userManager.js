@@ -76,6 +76,7 @@ var userManager = (function () {
         $("#userType").val("");
     }
 
+
     $('#profileImage').on("change", function () {
 
         var data = new FormData();
@@ -97,11 +98,28 @@ var userManager = (function () {
             processData: false,
             contentType: false,
             success: function (response) {
+
+                switch (response){
+                    case "SUCCESS": alert("SUCCESS");
+                        break;
+                    case "MAXIMUM_UPLOAD_SIZE_EXCEEDED": alert("MAXIMUM_UPLOAD_SIZE_EXCEEDED");
+                        break;
+                    case "FILE_IS_EMPTY": alert("FILE_IS_EMPTY");
+                        break;
+                    case "IO_ERROR": alert("IO_ERROR");
+                        break;
+                }
+
+
                 $(".progress").remove();
                 dinamicViewImage(file);
             },
             error: function (jqXHR, textStatus, errorThrown) {
-                console.log("Something wrong: " + textStatus);
+                //заглушка тут MAXIMUM_UPLOAD_SIZE_EXCEEDED
+
+                alert("MAXIMUM_UPLOAD_SIZE_EXCEEDED");
+                $(".progress").remove();
+
             }
         });
     });

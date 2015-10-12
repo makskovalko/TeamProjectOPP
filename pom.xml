@@ -1,37 +1,37 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-	<modelVersion>4.0.0</modelVersion>
-	<groupId>conference</groupId>
-	<artifactId>conference</artifactId>
-	<packaging>war</packaging>
-	<version>1.0</version>
-	<name>conference</name>
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>conference</groupId>
+    <artifactId>conference</artifactId>
+    <packaging>war</packaging>
+    <version>1.0</version>
+    <name>conference</name>
 
-	<repositories>
-		<repository>
-			<id>eap</id>
-			<url>http://maven.repository.redhat.com/techpreview/all</url>
-			<releases>
-				<enabled>true</enabled>
-			</releases>
-			<snapshots>
-				<enabled>true</enabled>
-			</snapshots>
-		</repository>
-	</repositories>
+    <repositories>
+        <repository>
+            <id>eap</id>
+            <url>http://maven.repository.redhat.com/techpreview/all</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
+    </repositories>
 
-	<pluginRepositories>
-		<pluginRepository>
-			<id>eap</id>
-			<url>http://maven.repository.redhat.com/techpreview/all</url>
-			<releases>
-				<enabled>true</enabled>
-			</releases>
-			<snapshots>
-				<enabled>true</enabled>
-			</snapshots>
-		</pluginRepository>
-	</pluginRepositories>
+    <pluginRepositories>
+        <pluginRepository>
+            <id>eap</id>
+            <url>http://maven.repository.redhat.com/techpreview/all</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </pluginRepository>
+    </pluginRepositories>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -161,13 +161,20 @@
             <groupId>commons-codec</groupId>
             <artifactId>commons-codec</artifactId>
             <version>1.9</version>
-    </dependency>
+        </dependency>
+
+        <!--GoogleDrive-->
+        <dependency>
+            <groupId>com.google.apis</groupId>
+            <artifactId>google-api-services-drive</artifactId>
+            <version>v2-rev187-1.20.0</version>
+        </dependency>
 
     </dependencies>
 
-	<profiles>
-		<profile>
-			<id>openshift</id>
+    <profiles>
+        <profile>
+            <id>openshift</id>
             <build>
                 <finalName>ROOT</finalName>
                 <plugins>
@@ -188,6 +195,6 @@
                     </plugin>
                 </plugins>
             </build>
-		</profile>
-	</profiles>
+        </profile>
+    </profiles>
 </project>
