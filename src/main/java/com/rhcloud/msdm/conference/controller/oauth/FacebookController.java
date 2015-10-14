@@ -2,15 +2,20 @@ package com.rhcloud.msdm.conference.controller.oauth;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.rhcloud.msdm.conference.utils.JSON_POJO.FacebookProfile;
+import com.rhcloud.msdm.conference.utils.JSON_POJO.UserRegInfo;
 import com.rhcloud.msdm.conference.utils.URLRequestUtil;
+import com.rhcloud.msdm.conference.utils.converter.FacebookConverter;
+import com.rhcloud.msdm.conference.utils.converter.VkConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.xml.ws.ResponseWrapper;
 import java.io.IOException;
 
 /**
@@ -29,11 +34,16 @@ public class FacebookController {
     @Autowired
     private URLRequestUtil urlRequestUtil;
 
+    @Autowired
+    private FacebookConverter facebookConverter;
+
 
 
     @RequestMapping(value = "/facebook/signUp")
-    public String signUp(HttpServletRequest request, ModelMap model) {
+    @ResponseBody
+    public UserRegInfo signUp(HttpServletRequest request, ModelMap model) {
         String accessToken = (String) request.getSession().getAttribute("facebookToken");
+        FacebookProfile profile = null;
         if(accessToken != null) {
             String data =
                     urlRequestUtil.sendRequest(
@@ -44,16 +54,14 @@ public class FacebookController {
             try {
 
                 ObjectMapper mapper = new ObjectMapper();
-                FacebookProfile profile = mapper.readValue(data, FacebookProfile.class);
+                profile = mapper.readValue(data, FacebookProfile.class);
             } catch (IOException ex) {
                 ex.printStackTrace();
             }
 
-            return "res";
+            return facebookConverter.convert(profile);
         }
-        else {
-            return "redirect:/facebook/login";
-        }
+            return null;
     }
 
 
