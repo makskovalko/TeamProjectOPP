@@ -34,6 +34,7 @@ public class Conference {
     private String city;
     private String address;
 
+    @Column(name = "description", columnDefinition = "TEXT")
     private String description;
     private Date date;
 
@@ -158,7 +159,6 @@ public class Conference {
         this.speakers = speakers;
     }
 
-    @Column(name = "description", columnDefinition = "TEXT")
     public String getDescription() {
         return description;
     }

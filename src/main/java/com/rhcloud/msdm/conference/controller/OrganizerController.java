@@ -1,15 +1,15 @@
 package com.rhcloud.msdm.conference.controller;
 
+import com.rhcloud.msdm.conference.domain.entities.Conference;
 import com.rhcloud.msdm.conference.domain.entities.Organizer;
 import com.rhcloud.msdm.conference.domain.pojo.ConferenceJSON;
 import com.rhcloud.msdm.conference.service.Impl.OrganizerService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
+import javax.swing.*;
+import java.util.List;
 
 @RestController
 public class OrganizerController {
@@ -35,5 +35,12 @@ public class OrganizerController {
     public String createConference(@RequestBody ConferenceJSON conferenceJSON) {
         organizerService.createConference(conferenceJSON);
         return "OK";
+    }
+
+    @RequestMapping(value = "/search_conference", method = RequestMethod.POST)
+    public List<Conference> searchConferences(@RequestParam(value = "search") String searchString) {
+        List<Conference> conferenceList = organizerService.findConferencesByName(searchString);
+        for (Conference conference : conferenceList) JOptionPane.showMessageDialog(null, conference.getName());
+        return conferenceList;
     }
 }

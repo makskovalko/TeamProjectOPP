@@ -66,6 +66,7 @@ public class RegAuthController {
         else return new ResponseEntity<String>("Ошибка регистрации!", httpHeaders, HttpStatus.OK);
     }
 
+
     @RequestMapping(value = "/signIn", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<String> signIn(@RequestBody User user, HttpServletRequest request) {
@@ -89,17 +90,5 @@ public class RegAuthController {
         if (request.getSession().getAttribute("user") != null)
             request.getSession().removeAttribute("user");
         return "redirect:/";
-    }
-
-    @RequestMapping(value = "/sendMail", method = RequestMethod.GET)
-    public String sendMail() {
-
-        String to = "makskovalko@gmail.com";
-        String subject = "MSDM";
-        String body = "Hello!!!";
-
-        mailSender.sendMail(to, subject, body);
-
-        return "index";
     }
 }

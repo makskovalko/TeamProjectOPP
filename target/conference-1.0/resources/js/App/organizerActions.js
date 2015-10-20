@@ -42,10 +42,11 @@ var organizerActions = (function() {
         conference.participantCount = 0;
 
         alert(JSON.stringify(conference));
+        conference = encodeURIComponent(JSON.stringify(conference));
 
         $.ajax({
             type: 'POST',
-            data: JSON.stringify(conference),
+            data: conference,
             url: '/create_conference',
             contentType: 'application/json',
             success: function(data) {
@@ -59,9 +60,22 @@ var organizerActions = (function() {
         });
     }
 
-    return {
-        saveData: saveData,
-        createConference: createConference
+    function searchConference() {
+        var search = $("#search").val();
+        alert(search);
+        $.ajax({
+            type: "POST",
+            data: search,
+            url: "/search_conference",
+            success: function(data) {
+                alert(data);
+            }
+        });
     }
 
+    return {
+        saveData: saveData,
+        createConference: createConference,
+        searchConference: searchConference
+    }
 })();

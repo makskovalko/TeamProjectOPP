@@ -11,7 +11,7 @@ import com.rhcloud.msdm.conference.service.Interfaces.OrganizerActions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.swing.*;
+import java.util.List;
 
 @Service
 public class OrganizerService implements OrganizerActions {
@@ -43,14 +43,16 @@ public class OrganizerService implements OrganizerActions {
         Organizer organizer = organizerRepository.findOne(conferenceJSON.getOrganizerId());
         Category category = categoryRepository.findOne(conferenceJSON.getCategoryId());
 
-        JOptionPane.showMessageDialog(null, organizer.toString());
-        JOptionPane.showMessageDialog(null, category.getName());
-
         conference.setOrganizer(organizer);
         conference.setCategory(category);
 
         conferenceRepository.saveAndFlush(conference);
 
         return conference;
+    }
+
+    @Override
+    public List<Conference> findConferencesByName(String name) {
+        return conferenceRepository.findAllConferencesByName(name);
     }
 }

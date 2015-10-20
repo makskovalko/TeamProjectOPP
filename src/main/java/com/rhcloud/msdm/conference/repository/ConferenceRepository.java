@@ -8,4 +8,5 @@ import java.util.List;
 
 public interface ConferenceRepository extends JpaRepository<Conference, Integer> {
     public List<Conference> findAllConferencesByOrganizerId(Integer organizerId);
+    public List<Conference> findAllConferencesByName(String name);
 }

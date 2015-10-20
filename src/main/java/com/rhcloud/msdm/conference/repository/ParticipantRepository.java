@@ -8,11 +8,14 @@ import org.springframework.transaction.annotation.Transactional;
 
 
 public interface ParticipantRepository extends JpaRepository<Participant, Integer> {
-    public Participant findParticipantByEmailOrUserName(String email, String userName);
-    public Participant findParticipantByUserNameAndPassword(String userName, String password);
+
+    Participant findParticipantByEmailOrUserName(String email, String userName);
+
+    Participant findParticipantByUserNameAndPassword(String userName, String password);
 
     @Modifying
     @Transactional
     @Query("update Participant p set p.confirmationKey = '', p.active = 1 where p.userName = ?1 and p.confirmationKey = ?2")
-    public void confirmRegistration(String userName, String confirmationKey);
+    void confirmRegistration(String userName, String confirmationKey);
+
 }
