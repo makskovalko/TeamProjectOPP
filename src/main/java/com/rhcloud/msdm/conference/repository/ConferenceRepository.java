@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.List;
 
 public interface ConferenceRepository extends JpaRepository<Conference, Integer> {
+
     List<Conference> findAllConferencesByOrganizerId(Integer organizerId);
     List<Conference> findAllConferencesByName(String name);
 

@@ -37,32 +37,32 @@ public class VkController {
     private VkConverter vkConverter;
 
     @RequestMapping(value = "/vk/callback")
-    public String callback(@RequestParam("code") String code , HttpServletRequest request)  {
+    public String callback(@RequestParam("code") String code, HttpServletRequest request) {
         String data = new URLRequestUtil().sendRequest("https://oauth.vk.com/access_token?client_id="
                 + appId + "&client_secret=" + appSecret + "&redirect_uri=" + callbackUrl + "&code=" + code);
         String token = null;
         try {
             JSONObject json = (JSONObject) new JSONParser().parse(data);
             token = (String) json.get("access_token");
-         } catch (ParseException e) {
+        } catch (ParseException e) {
             e.printStackTrace();
         }
-        request.getSession().setAttribute("VkToken" , token);
+        request.getSession().setAttribute("VkToken", token);
         return "redirect:/vk/signUp";
 
     }
 
     @RequestMapping(value = "/vk/login")
     public void login(HttpServletResponse response) throws IOException {
-       response.sendRedirect("https://oauth.vk.com/authorize?client_id="
-               +appId+"&display=page&redirect_uri="+callbackUrl+"&scope=friends&response_type=code&v=5.37");
+        response.sendRedirect("https://oauth.vk.com/authorize?client_id="
+                + appId + "&display=page&redirect_uri=" + callbackUrl + "&scope=friends&response_type=code&v=5.37");
     }
 
     @RequestMapping(value = "/vk/signUp")
     @ResponseBody
-    public UserRegInfo signUp(HttpServletRequest request){
-        String token = (String)request.getSession().getAttribute("VkToken");
-        if(token != null) {
+    public UserRegInfo signUp(HttpServletRequest request) {
+        String token = (String) request.getSession().getAttribute("VkToken");
+        if (token != null) {
             String userRequest = "https://api.vk.com/method/users.get?v=5.37&access_token=" + token + "&fields=bdate,photo_200_orig";
             String data = urlRequestUtil.sendRequest(userRequest);
             VkProfileContainer profiles = null;
@@ -73,17 +73,18 @@ public class VkController {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            return  vkConverter.convert(profile);
+            return vkConverter.convert(profile);
         }
-            return null;
+        return null;
     }
 
 
     public URLRequestUtil getUrlRequestUtil() {
         return urlRequestUtil;
     }
-    public void setUrlRequestUtil(URLRequestUtil urlRequestUtil){
-        this.urlRequestUtil= urlRequestUtil;
+
+    public void setUrlRequestUtil(URLRequestUtil urlRequestUtil) {
+        this.urlRequestUtil = urlRequestUtil;
     }
 
     public VkConverter getVkConverter() {
