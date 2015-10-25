@@ -41,7 +41,7 @@ public class MainController {
     @RequestMapping(value = "/profile/participant", method = RequestMethod.GET)
     public String participantView(Model model, HttpSession session) throws BufferDirIsNotDirectoryException, GeneralSecurityException, IOException {
         String fileName = ((User) session.getAttribute("user")).getUserName();
-        if ( fileUploaderService.fileExists(fileName) != null || googleDriveService.download(fileName)) {
+        if (fileUploaderService.fileExists(fileName) != null || googleDriveService.download(fileName)) {
             model.addAttribute("profileImg", "../resources/ProfileImagesBufferDir/" + fileUploaderService.fileExists(fileName).getName());
         } else {
             model.addAttribute("profileImg", "../resources/img/default.gif");

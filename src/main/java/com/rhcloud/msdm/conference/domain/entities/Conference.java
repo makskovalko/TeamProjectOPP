@@ -166,4 +166,9 @@ public class Conference {
     public void setDescription(String description) {
         this.description = description;
     }
+
+    @Override
+    public String toString() {
+        return String.format("%s\n, %s\n, %s\n, %s\n, %s\n, %s\n, %s\n, %s\n, %s", name, country, city, address, description, participantLimit, organizer.getId(), category.getId(), date);
+    }
 }

@@ -10,5 +10,5 @@ public interface OrganizerActions {
     public void updateData(Organizer organizer);
     public Organizer getOrganizerByUserName(String userName);
     public Conference createConference(ConferenceJSON conferenceJSON);
-    public List<Conference> findConferencesByName(String name);
+    //public List<Conference> findConferencesByName(String name);
 }

@@ -58,20 +58,6 @@ public class VkController {
                +appId+"&display=page&redirect_uri="+callbackUrl+"&scope=friends&response_type=code&v=5.37");
     }
 
-    @RequestMapping(value = "/vk/signUp")
-<<<<<<< HEAD
-    public String signUp(HttpServletRequest request) {
-       String token = (String)request.getSession().getAttribute("VkToken");
-        String userRequest = "https://api.vk.com/method/users.get?v=5.37&access_token="+ token+"&fields=bdate,photo_200_orig";
-        String data = urlRequestUtil.sendRequest(userRequest);
-        VkProfileContainer profiles = null;
-        VkProfile profile = null;
-        try {
-            profiles = new ObjectMapper().readValue(data , VkProfileContainer.class);
-            profile = profiles.getVkProfileList().get(0);
-            if(true){//Заглушка для проверки регистрации
-                registration(profile);
-=======
     @ResponseBody
     public UserRegInfo signUp(HttpServletRequest request){
         String token = (String)request.getSession().getAttribute("VkToken");
@@ -85,15 +71,10 @@ public class VkController {
                 profile = profiles.getVkProfileList().get(0);
             } catch (IOException e) {
                 e.printStackTrace();
->>>>>>> 421bea94af2b1a21b5a511df40d0299a0858624d
             }
             return  vkConverter.convert(profile);
         }
-<<<<<<< HEAD
-        return "redirect:/";
-=======
-            return null;
->>>>>>> 421bea94af2b1a21b5a511df40d0299a0858624d
+        return null;
     }
 
 

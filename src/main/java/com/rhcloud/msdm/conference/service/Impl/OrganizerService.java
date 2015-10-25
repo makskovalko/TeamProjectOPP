@@ -51,8 +51,7 @@ public class OrganizerService implements OrganizerActions {
         return conference;
     }
 
-    @Override
     public List<Conference> findConferencesByName(String name) {
-        return conferenceRepository.findAllConferencesByName(name);
+        return conferenceRepository.findAllConferencesByNameContaining(name);
     }
 }
