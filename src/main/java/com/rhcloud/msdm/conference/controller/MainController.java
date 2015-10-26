@@ -4,6 +4,7 @@ import com.rhcloud.msdm.conference.domain.entities.Organizer;
 import com.rhcloud.msdm.conference.domain.entities.User;
 import com.rhcloud.msdm.conference.repository.CategoryRepository;
 import com.rhcloud.msdm.conference.repository.ConferenceRepository;
+import com.rhcloud.msdm.conference.service.Interfaces.ConferenceTicketActions;
 import com.rhcloud.msdm.conference.utils.FileUploader;
 import com.rhcloud.msdm.conference.utils.GoogleDriveService;
 import com.rhcloud.msdm.conference.utils.UploadStatus;
@@ -31,6 +32,9 @@ public class MainController {
     @Autowired
     private ConferenceRepository conferenceRepository;
 
+    @Resource(name = "conferenceTicketService")
+    private ConferenceTicketActions conferenceTicketActions;
+
     @Resource(name = "fileUploaderService")
     private FileUploader fileUploaderService;
 
@@ -46,6 +50,8 @@ public class MainController {
         } else {
             model.addAttribute("profileImg", "../resources/img/default.gif");
         }
+
+        model.addAttribute("lastConferences", conferenceTicketActions.getLastConference(10));
 
         return "profiles/participant";
     }

@@ -1,6 +1,6 @@
 package com.rhcloud.msdm.conference.domain.entities;
 
-import com.rhcloud.msdm.conference.domain.pojo.ConferenceJSON;
+import com.rhcloud.msdm.conference.utils.JSON_POJO.ConferenceJSON;
 
 import javax.persistence.*;
 import java.util.ArrayList;

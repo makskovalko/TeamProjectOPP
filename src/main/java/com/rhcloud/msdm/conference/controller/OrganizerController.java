@@ -4,7 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.rhcloud.msdm.conference.domain.entities.Conference;
 import com.rhcloud.msdm.conference.domain.entities.Organizer;
-import com.rhcloud.msdm.conference.domain.pojo.ConferenceJSON;
+import com.rhcloud.msdm.conference.utils.JSON_POJO.ConferenceJSON;
 import com.rhcloud.msdm.conference.service.Impl.OrganizerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -69,7 +69,6 @@ public class OrganizerController {
         } catch (JsonProcessingException e) {
             return new ResponseEntity<String>("Fail", httpHeaders, org.springframework.http.HttpStatus.OK);
         }
-
         return new ResponseEntity<String>(resultJson, httpHeaders, org.springframework.http.HttpStatus.OK);
     }
 }

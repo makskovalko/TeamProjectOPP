@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <meta charset="UTF-8" />
+    <title></title>
+    <!-- CSS  -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons"  rel="stylesheet" />
+    <link href="../../resources/css/materialize.css" th:href="'../../resources/css/materialize.css'" type="text/css" rel="stylesheet" media="screen,projection"/>
+
+    <link rel="stylesheet" href="../../resources/css/conferenceTicket.css" th:href="'../../resources/css/conferenceTicket.css'" />
+</head>
+<body>
+
+<div class="container header">
+    <div class="date_and_place">
+
+        <div class="row">
+            <div class="col l2 m1 s1 date">&nbsp;</div>
+            <div class="col l10 m11 s11">
+                <i class="medium material-icons">perm_contact_calendar</i>
+                <span th:text="${dayOfWeek} +' '+${#calendars.format(conferenseData.getDate(),'dd-MM-yyyy')}"></span>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col l2 m1 s1">&nbsp;</div>
+            <div class="col l10 m11 s11 place">
+                <i class="medium material-icons">my_location</i>
+                <span th:text="${conferenseData.country} +', '+${conferenseData.city}"></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="conference_name">
+        <div class="row">
+            <div class="col l1">&nbsp;</div>
+            <div class="col l10" th:text="${conferenseData.name}"></div>
+            <div class="col l1">&nbsp;</div>
+        </div>
+    </div>
+
+</div>
+
+<video class="video" style="width: 100%" loop="loop" autoplay="autoplay">
+    <source src="../../resources/img/conference/it/background-video.mp4" th:src="'../../resources/img/conference/it/background-video.mp4'" type="video/mp4"/>
+</video>
+
+<nav id="navigation">
+    <div class="nav-wrapper grey darken-4">
+        <a href="#" data-activates="mobile" class="button-collapse"><i class="material-icons">menu</i></a>
+        <ul class="right hide-on-med-and-down">
+            <li>
+                <a class="waves-effect waves-light btn-large green lighten-2"><i class="material-icons right">credit_card</i>Buy ticket</a>
+            </li>
+            <li>
+                <a href="#" style="font-size: 18px">
+                    <img style="margin-top: 8px; float: left" width="50" height="50" src="../../resources/img/avatar.jpg" th:src="${profileImg}" class="circle" />
+                    <div style="margin: 2px 0 0 10px; float: left" th:text="'Welcome ' + ${session.user.userName} + '!'"></div>
+                </a>
+            </li>
+            <li>
+                <a href="/logOut" style="font-size: 18px">Log out</a>
+            </li>
+        </ul>
+        <ul class="side-nav" id="mobile">
+            <li>
+                <a href="#" style="font-size: 18px">
+                    <img style="margin-top: 8px; float: left" width="50" height="50" src="../../resources/img/avatar.jpg" th:src="${profileImg}" class="circle" />
+                    <div style="margin: 2px 0 0 10px; float: left" th:text="'Welcome ' + ${session.user.userName} + '!'"></div>
+                </a>
+            </li>
+            <li>
+                <a class="btn green lighten-2" style="font-size: 18px"><i class="material-icons right">credit_card</i> Buy ticket</a>
+            </li>
+            <li>
+                <a href="/logOut" style="font-size: 18px">Log out</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+<div class="container">
+    <div class="section">
+
+        <!--   Icon Section   -->
+        <div class="row">
+            <div class="col s12 m4">
+                <div class="icon-block">
+                    <h2 class="center brown-text"><i class="material-icons">flash_on</i></h2>
+                    <h5 class="center">Speeds up development</h5>
+
+                    <p class="light">We did most of the heavy lifting for you to provide a default stylings that incorporate our custom components. Additionally, we refined animations and transitions to provide a smoother experience for developers.</p>
+                </div>
+            </div>
+
+            <div class="col s12 m4">
+                <div class="icon-block">
+                    <h2 class="center brown-text"><i class="material-icons">group</i></h2>
+                    <h5 class="center">User Experience Focused</h5>
+
+                    <p class="light">By utilizing elements and principles of Material Design, we were able to create a framework that incorporates components and animations that provide more feedback to users. Additionally, a single underlying responsive system across all platforms allow for a more unified user experience.</p>
+                </div>
+            </div>
+
+            <div class="col s12 m4">
+                <div class="icon-block">
+                    <h2 class="center brown-text"><i class="material-icons">settings</i></h2>
+                    <h5 class="center">Easy to work with</h5>
+
+                    <p class="light">We have provided detailed documentation as well as specific code examples to help new users get started. We are also always open to feedback and can answer any questions a user may have about Materialize.</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+<div class="parallax-container valign-wrapper">
+    <div class="section no-pad-bot">
+        <div class="container">
+            <div class="row center">
+                <span id="participantCount" th:text="${conferenseData.participantCount}"></span>
+                <ul class="how_much_participants_in_conference">
+                    <li></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="parallax"><img src="../../resources/img/conference/it/apple-swift-programing.jpg" th:src="'../../resources/img/conference/it/apple-swift-programing.jpg'" alt="Unsplashed background img 2" /></div>
+</div>
+
+<div class="container">
+    <div class="section">
+
+        <div class="row">
+            <div class="col s12 center">
+                <h3><i class="mdi-content-send brown-text"></i></h3>
+                <h4>Contact Us</h4>
+                <p class="left-align light">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam scelerisque id nunc nec volutpat. Etiam pellentesque tristique arcu, non consequat magna fermentum ac. Cras ut ultricies eros. Maecenas eros justo, ullamcorper a sapien id, viverra ultrices eros. Morbi sem neque, posuere et pretium eget, bibendum sollicitudin lacus. Aliquam eleifend sollicitudin diam, eu mattis nisl maximus sed. Nulla imperdiet semper molestie. Morbi massa odio, condimentum sed ipsum ac, gravida ultrices erat. Nullam eget dignissim mauris, non tristique erat. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae;</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="parallax-container center-parallax-container valign-wrapper">
+    <div class="section no-pad-bot">
+        <div class="container">
+            <div class="row center">
+                <h5 class="header col s12 light">A modern responsive front-end framework based on Material Design</h5>
+            </div>
+        </div>
+    </div>
+    <div class="parallax"><img src="../../resources/img/conference/it/hi-tech-technology-noutbuk.jpg" th:src="'../../resources/img/conference/it/hi-tech-technology-noutbuk.jpg'" alt="Unsplashed background img 3" /></div>
+</div>
+
+<div class="container">
+    <div class="section">
+
+        <div class="row">
+            <div class="col s12 center">
+                <h3><i class="mdi-content-send brown-text"></i></h3>
+                <h4>Найти нас просто</h4>
+            </div>
+        </div>
+
+        <div class="row">
+            <ul class="left-align light col l6">
+                <li>Вот-так</li>
+                <li>Да-да</li>
+                <li>Именно</li>
+                <li>Сюда</li>
+            </ul>
+            <span id="address" style="display: none" th:text="${conferenseData.address}"></span>
+            <div id="map" class="card col l6" style="width: 300px; height: 300px;"></div>
+        </div>
+    </div>
+</div>
+
+<div class="parallax-container valign-wrapper">
+    <div class="section no-pad-bot">
+        <div class="container">
+            <div class="row center">
+                <h5 style="color: white" class="header col s12 light">A modern responsive front-end framework based on Material Design</h5>
+            </div>
+        </div>
+    </div>
+    <div class="parallax"><img src="../../resources/img/conference/it/emilie-caillon-prygunya.jpg" th:src="'../../resources/img/conference/it/emilie-caillon-prygunya.jpg'" alt="Unsplashed background img 2" /></div>
+</div>
+
+<footer class="page-footer teal">
+    <div class="container">
+        <div class="row">
+            <div class="col l6 s12">
+                <h5 class="white-text">Company Bio</h5>
+                <p class="grey-text text-lighten-4">We are a team of college students working on this project like it's our full time job. Any amount would help support and continue development on this project and is greatly appreciated.</p>
+
+
+            </div>
+            <div class="col l3 s12">
+                <h5 class="white-text">Settings</h5>
+                <ul>
+                    <li><a class="white-text" href="#!">Link 1</a></li>
+                    <li><a class="white-text" href="#!">Link 2</a></li>
+                    <li><a class="white-text" href="#!">Link 3</a></li>
+                    <li><a class="white-text" href="#!">Link 4</a></li>
+                </ul>
+            </div>
+            <div class="col l3 s12">
+                <h5 class="white-text">Connect</h5>
+                <ul>
+                    <li><a class="white-text" href="#!">Link 1</a></li>
+                    <li><a class="white-text" href="#!">Link 2</a></li>
+                    <li><a class="white-text" href="#!">Link 3</a></li>
+                    <li><a class="white-text" href="#!">Link 4</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="footer-copyright">
+        <div class="container">
+            Made by <a class="brown-text text-lighten-3" href="http://materializecss.com">Materialize</a>
+        </div>
+    </div>
+</footer>
+
+<!--  Scripts-->
+<script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+<script src="../../../resources/js/libs/materialize.js" th:src="'../resources/js/libs/materialize.js'"></script>
+<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
+<script src="../../resources/js/app/GoogleMapsService.js" th:src="'../../resources/js/app/GoogleMapsService.js'"></script>
+<script src="../../resources/js/app/conferenceTicketActions.js" th:src="'../../resources/js/app/conferenceTicketActions.js'"></script>
+
+<script>
+    GoogleMapsService.findByAddressAndShow($("#address").text(), "map");
+</script>
+
+
+</body>
+</html>

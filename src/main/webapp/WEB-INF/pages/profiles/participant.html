@@ -163,29 +163,24 @@
                         </div>
                     </div>
                     <div class="col s11">
-                        <div class="card small">
-                            <h5>Conference name</h5>
-                            <p>Conference description</p>
-                        </div>
 
-                        <div class="card small">
-                            <h5>Conference name</h5>
-                            <p>Conference description</p>
-                        </div>
-
-                        <div class="card small">
-                            <h5>Conference name</h5>
-                            <p>Conference description</p>
-                        </div>
-
-                        <div class="card small">
-                            <h5>Conference name</h5>
-                            <p>Conference description</p>
-                        </div>
-
-                        <div class="card small">
-                            <h5>Conference name</h5>
-                            <p>Conference description</p>
+                        <div class="row">
+                            <div class="col s12 m6" th:each="conference : ${lastConferences}">
+                                <div class="card small brown darken-1">
+                                    <div class="card-content white-text">
+                                        <span class="card-title" th:text="${conference.name}">Card Title</span>
+                                        <p th:text="${conference.description}">I am a very simple card. I am good at containing small bits of information.
+                                            I am convenient because I require little markup to use effectively.
+                                        </p>
+                                    </div>
+                                    <div class="card-action right">
+                                        <a th:href="'/conference/' + ${conference.id}">Подробнее</a>
+                                        <a href="#" th:text="${#dates.format(conference.date, 'dd.MM.yyyy')}"
+                                           style="position: absolute; right:0; color: #fff;">Date
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -204,11 +199,11 @@
 
 <!--  Scripts-->
 <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
-<script src="../../../resources/js/Libs/materialize.js" th:src="'../resources/js/Libs/materialize.js'"></script>
-<script src="../../../resources/js/Libs/init.js" th:src="'../resources/js/Libs/init.js'"></script>
-<script src="../../../resources/js/Libs/date.js" th:src="'../resources/js/Libs/date.js'"></script>
-<script src="../../../resources/js/App/participantActions.js" th:src="'../resources/js/App/participantActions.js'"></script>
-<script src="../../../resources/JS/App/userManager.js" th:src="'../resources/js/App/userManager.js'"></script>
+<script src="../../../resources/js/libs/materialize.js" th:src="'../resources/js/libs/materialize.js'"></script>
+<script src="../../../resources/js/libs/init.js" th:src="'../resources/js/libs/init.js'"></script>
+<script src="../../../resources/js/libs/date.js" th:src="'../resources/js/libs/date.js'"></script>
+<script src="../../../resources/js/app/participantActions.js" th:src="'../resources/js/app/participantActions.js'"></script>
+<script src="../../../resources/js/app/userManager.js" th:src="'../resources/js/app/userManager.js'"></script>
 
 <script type="text/javascript">
     $(document).ready(function(){
