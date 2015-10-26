@@ -24,7 +24,7 @@ public class ConferenceTicketService implements ConferenceTicketActions {
 
 
     @Override
-    public List<Conference> getLastConference(Integer number) {
+    public List<Conference> getLastConferences(Integer number) {
 
         int lastConferenceID = conferenceRepository.findMaxID();
         if (lastConferenceID < number) {

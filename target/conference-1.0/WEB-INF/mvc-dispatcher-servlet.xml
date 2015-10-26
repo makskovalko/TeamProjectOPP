@@ -77,12 +77,24 @@
         </property>
     </bean>
 
-    <!--<mvc:interceptors>
+    <mvc:interceptors>
         <mvc:interceptor>
-            <mvc:mapping path="/**"/>
-            <bean class="com.rhcloud.msdm.conference.security.MainInterceptor"/>
+            <mvc:mapping path="/profile/participant/**"/>
+            <bean class="com.rhcloud.msdm.conference.security.ParticipantInterceptor"/>
         </mvc:interceptor>
-    </mvc:interceptors>-->
+        <mvc:interceptor>
+            <mvc:mapping path="/profile/speaker/**"/>
+            <bean class="com.rhcloud.msdm.conference.security.SpeakerInterceptor"/>
+        </mvc:interceptor>
+        <mvc:interceptor>
+            <mvc:mapping path="/profile/organizer/**"/>
+            <bean class="com.rhcloud.msdm.conference.security.OrganizerInterceptor"/>
+        </mvc:interceptor>
+        <mvc:interceptor>
+            <mvc:mapping path="/conference/**"/>
+            <bean class="com.rhcloud.msdm.conference.security.ConferenceInterceptor"/>
+        </mvc:interceptor>
+    </mvc:interceptors>
 
 
     <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver"

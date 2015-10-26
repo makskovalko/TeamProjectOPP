@@ -21,4 +21,8 @@ public class ParticipantController {
         session.setAttribute("user", participantActions.updateData(profileData));
         return profileData;
     }
+
+
+
+
 }

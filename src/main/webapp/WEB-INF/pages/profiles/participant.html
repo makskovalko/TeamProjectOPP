@@ -1,15 +1,17 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://www.thymeleaf.org" >
+      xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no"/>
     <title>Participant Profile</title>
 
     <!-- CSS  -->
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons"  rel="stylesheet" />
-    <link href="../../../resources/css/materialize.css" th:href="'../resources/css/materialize.css'" type="text/css" rel="stylesheet" media="screen,projection"/>
-    <link href="../../../resources/css/style.css" th:href="'../resources/css/style.css'" type="text/css" rel="stylesheet" media="screen,projection"/>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
+    <link href="../../../resources/css/materialize.css" th:href="'../resources/css/materialize.css'" type="text/css"
+          rel="stylesheet" media="screen,projection"/>
+    <link href="../../../resources/css/style.css" th:href="'../resources/css/style.css'" type="text/css"
+          rel="stylesheet" media="screen,projection"/>
 
     <style>
         .collapsible-header {
@@ -25,7 +27,9 @@
         <a id="logo-container" href="#" class="brand-logo">Conference System</a>
         <ul class="right hide-on-med-and-down">
             <div th:if="${session.user != null}">
-                <li><a th:href="'/profile/' + ${session.user.userType}" th:text="'Добро пожаловать, ' + ${session.user.userName} + '!'">Welcome<i class="material-icons right">perm_identity</i></a></li>
+                <li><a th:href="'/profile/' + ${session.user.userType}"
+                       th:text="'Добро пожаловать, ' + ${session.user.userName} + '!'">Welcome<i
+                        class="material-icons right">perm_identity</i></a></li>
                 <li><a href="/logOut"><i class="material-icons left">power_settings_new</i>Выйти</a></li>
             </div>
         </ul>
@@ -33,7 +37,9 @@
         <ul id="nav-mobile" class="side-nav">
             <div th:if="${session.user != null}">
                 <div class="row">
-                    <li><a th:href="'/profile/' + ${session.user.userType}" th:text="'Добро пожаловать, ' + ${session.user.userName} + '!'">Welcome<i class="material-icons right">perm_identity</i></a></li>
+                    <li><a th:href="'/profile/' + ${session.user.userType}"
+                           th:text="'Добро пожаловать, ' + ${session.user.userName} + '!'">Welcome<i
+                            class="material-icons right">perm_identity</i></a></li>
                 </div>
                 <div class="row">
                     <li><a href="/logOut"><i class="material-icons left">power_settings_new</i>Выйти</a></li>
@@ -49,21 +55,26 @@
 
         <div class="card">
             <div class="card-image waves-effect waves-block waves-light">
-                <img id="profileImg" class="activator" th:src="${profileImg}" />
+                <img id="profileImg" class="activator" th:src="${profileImg}"/>
             </div>
             <div class="card-content">
-                        <span class="card-title activator grey-text text-darken-4" th:inline="text"  id="fullName">
+                        <span class="card-title activator grey-text text-darken-4" th:inline="text" id="fullName">
                             [[${session.user.firstName + ' ' + session.user.lastName}]]
                             <i class="material-icons right">more_vert</i>
                         </span>
+
                 <div class="row">
                     <ul class="collapsible" data-collapsible="expandable">
                         <li>
                             <div class="collapsible-header active">Контактные данные</div>
                             <div class="collapsible-body">
                                 <ul class="collection">
-                                    <i class="material-icons left">phone</i><li id="phoneNumberContactData" class="collection-item" th:text="${session.user.phoneNumber}"></li>
-                                    <i class="material-icons left">email</i><li id="emailContactData" class="collection-item" th:text="${session.user.email}"></li>
+                                    <i class="material-icons left">phone</i>
+                                    <li id="phoneNumberContactData" class="collection-item"
+                                        th:text="${session.user.phoneNumber}"></li>
+                                    <i class="material-icons left">email</i>
+                                    <li id="emailContactData" class="collection-item"
+                                        th:text="${session.user.email}"></li>
                                 </ul>
                             </div>
                         </li>
@@ -74,67 +85,72 @@
 
             <div class="card-reveal">
                 <span class="card-title grey-text text-darken-4">Редактировать профиль<i class="material-icons right">close</i></span>
+
                 <div class="row">
                     <form class="col s12">
                         <div class="row" style="display:none;">
                             <div class="input-field col s12">
-                                <input id="userName" type="text" class="validate" th:value="${session.user.userName}" />
+                                <input id="userName" type="text" class="validate" th:value="${session.user.userName}"/>
                             </div>
                         </div>
 
                         <div class="row">
                             <div class="input-field col s12">
-                                    <div class="file-field input-field">
-                                        <div class="btn" id="btn_photo_load">
-                                            <span>Загрузить фото профиля</span>
-                                            <input id="profileImage" type="file" />
-                                        </div>
-                                        <div class="file-path-wrapper">
-                                            <input class="file-path validate" type="text" />
-                                        </div>
+                                <div class="file-field input-field">
+                                    <div class="btn" id="btn_photo_load">
+                                        <span>Загрузить фото профиля</span>
+                                        <input id="profileImage" type="file"/>
                                     </div>
+                                    <div class="file-path-wrapper">
+                                        <input class="file-path validate" type="text"/>
+                                    </div>
+                                </div>
                             </div>
                             <div id="progressUploadingImage"></div>
                         </div>
 
                         <div class="row">
                             <div class="input-field col s12">
-                                <input id="firstName" type="text" class="validate" th:value="${session.user.firstName}" />
+                                <input id="firstName" type="text" class="validate"
+                                       th:value="${session.user.firstName}"/>
                                 <label for="firstName" data-error="wrong" data-success="right">Имя</label>
                             </div>
                         </div>
 
                         <div class="row">
                             <div class="input-field col s12">
-                                <input id="lastName" type="text" class="validate" th:value="${session.user.lastName}" />
+                                <input id="lastName" type="text" class="validate" th:value="${session.user.lastName}"/>
                                 <label for="lastName" data-error="wrong" data-success="right">Фамилия</label>
                             </div>
                         </div>
 
                         <div class="row">
                             <div class="input-field col s12">
-                                <input id="email" type="email" class="validate" th:value="${session.user.email}" />
+                                <input id="email" type="email" class="validate" th:value="${session.user.email}"/>
                                 <label for="email" data-error="wrong" data-success="right">E-mail</label>
                             </div>
                         </div>
 
                         <div class="row">
                             <div class="input-field col s12">
-                                <input id="phoneNumber" type="tel" class="validate" th:value="${session.user.phoneNumber}" />
+                                <input id="phoneNumber" type="tel" class="validate"
+                                       th:value="${session.user.phoneNumber}"/>
                                 <label for="phoneNumber" data-error="wrong" data-success="right">Номер телефона</label>
                             </div>
                         </div>
 
                         <div class="row">
                             <div class="input-field col s12">
-                                <input id="dateOfBirth" type="date" class="validate" th:value="${#calendars.format(session.user.dateOfBirth,'yyyy-MM-dd')}" />
+                                <input id="dateOfBirth" type="date" class="validate"
+                                       th:value="${#calendars.format(session.user.dateOfBirth,'yyyy-MM-dd')}"/>
                                 <label class="active" for="dateOfBirth">Дата рождения</label>
                             </div>
                         </div>
 
                         <div class="row">
                             <div class="input-field col s12">
-                                <button class="btn waves-effect waves-light" type="button" name="action" onclick="participantActions.saveData()">Сохранить
+                                <button class="btn waves-effect waves-light" type="button" name="action"
+                                        onclick="participantActions.saveData()">Сохранить
                                     <i class="material-icons left">done</i>
                                 </button>
                             </div>
@@ -149,27 +165,17 @@
         <div class="row">
 
             <div class="row">
-                <div class="col s11">
-                        <h4 class="col s12 m6">Все конференции</h4>
-                </div>
                 <div id="test1" class="col s12">
-                    <div class="row">
-                        <div class="input-field col s9">
-                            <input id="search" type="text" class="validate" />
-                            <label for="search">Найти конференцию</label>
-                        </div>
-                        <div class="col s3">
-                            <button style="margin-top: 30px;" class="btn waves-effect waves-light" type="submit" name="action">Найти</button>
-                        </div>
-                    </div>
                     <div class="col s11">
 
                         <div class="row">
                             <div class="col s12 m6" th:each="conference : ${lastConferences}">
-                                <div class="card small brown darken-1">
+                                <div class="card small" th:style="'background-color:' + ${conference.category.color}">
                                     <div class="card-content white-text">
                                         <span class="card-title" th:text="${conference.name}">Card Title</span>
-                                        <p th:text="${conference.description}">I am a very simple card. I am good at containing small bits of information.
+
+                                        <p th:text="${conference.description}">I am a very simple card. I am good at
+                                            containing small bits of information.
                                             I am convenient because I require little markup to use effectively.
                                         </p>
                                     </div>
@@ -190,8 +196,8 @@
 
     <div class="col s12 m2" style="margin-top: 80px;">
         <div class="row">
-            <input id="country_filter" type="text" class="validate" placeholder="Страна" />
-            <input id="city_filter-limit" type="text" class="validate" placeholder="Город" />
+            <input id="country_filter" type="text" class="validate" placeholder="Страна"/>
+            <input id="city_filter-limit" type="text" class="validate" placeholder="Город"/>
             <a class="waves-effect waves-light btn"><i class="material-icons left">cloud</i>Найти</a>
         </div>
     </div>
@@ -202,13 +208,14 @@
 <script src="../../../resources/js/libs/materialize.js" th:src="'../resources/js/libs/materialize.js'"></script>
 <script src="../../../resources/js/libs/init.js" th:src="'../resources/js/libs/init.js'"></script>
 <script src="../../../resources/js/libs/date.js" th:src="'../resources/js/libs/date.js'"></script>
-<script src="../../../resources/js/app/participantActions.js" th:src="'../resources/js/app/participantActions.js'"></script>
+<script src="../../../resources/js/app/participantActions.js"
+        th:src="'../resources/js/app/participantActions.js'"></script>
 <script src="../../../resources/js/app/userManager.js" th:src="'../resources/js/app/userManager.js'"></script>
 
 <script type="text/javascript">
-    $(document).ready(function(){
+    $(document).ready(function () {
         $('.collapsible').collapsible({
-            accordion : false // A setting that changes the collapsible behavior to expandable instead of the default accordion style
+            accordion: false // A setting that changes the collapsible behavior to expandable instead of the default accordion style
         });
     });
 </script>
