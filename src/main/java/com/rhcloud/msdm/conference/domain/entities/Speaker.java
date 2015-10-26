@@ -80,6 +80,14 @@ public class Speaker extends User {
     @ManyToMany(mappedBy = "speakers")
     private List<Conference> conferences = new ArrayList<Conference>();
 
+
+    @OneToMany(mappedBy = "speaker" , cascade =  { CascadeType.ALL, CascadeType.PERSIST })
+    private List<QueryConference> queryConferenceList = new ArrayList<QueryConference>();
+
+
+    @OneToMany(mappedBy = "speaker",cascade = { CascadeType.ALL, CascadeType.PERSIST })
+    private List<Offer> offers = new ArrayList<Offer>();
+
     public String getConfirmationKey() {
         return confirmationKey;
     }
@@ -220,4 +228,46 @@ public class Speaker extends User {
                 userName, password, firstName, lastName, email, phoneNumber);
     }
 
+    public List<Offer> getOffers() {
+        return offers;
+    }
+
+    public void setOffers(List<Offer> offers) {
+        this.offers = offers;
+    }
+
+    public List<QueryConference> getQueryConferenceList() {
+        return queryConferenceList;
+    }
+
+    public void setQueryConferenceList(List<QueryConference> queryConferenceList) {
+        this.queryConferenceList = queryConferenceList;
+    }
+
+
+    public void addOffer(Offer offer){
+        this.offers.add(offer);
+    }
+
+    public void removeOffer(Offer offer){
+        this.offers.remove(offer);
+    }
+
+    public void addConference(Conference conference){
+        this.conferences.add(conference);
+
+    }
+
+    public  void removeConference(Conference conference){
+        this.conferences.remove(conference);
+    }
+
+
+    public  void addQuery(QueryConference queryConference){
+        this.queryConferenceList.add(queryConference);
+    }
+
+    public  void removeQuery(QueryConference queryConference){
+        this.queryConferenceList.remove(queryConference);
+    }
 }

@@ -4,6 +4,7 @@ package com.rhcloud.msdm.conference.repository;
 import com.rhcloud.msdm.conference.domain.entities.Conference;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -16,4 +17,8 @@ public interface ConferenceRepository extends JpaRepository<Conference, Integer>
 
     @Query("select max(c.id) from Conference c")
     Integer findMaxID();
+
+    @Transactional
+    @Query(value = "select  c from  Conference c left join  fetch  c.speakers s where  c.id=?1")
+    Conference getConferenceJoinSpeakerById(Integer id);
 }

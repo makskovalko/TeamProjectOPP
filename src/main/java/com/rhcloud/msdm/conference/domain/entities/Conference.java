@@ -55,6 +55,13 @@ public class Conference {
     private List<Speaker> speakers = new ArrayList<Speaker>();
 
 
+    @OneToMany(mappedBy = "conference" , cascade =  { CascadeType.ALL, CascadeType.PERSIST })
+    private List<Offer> offers = new ArrayList<Offer>();
+
+    @OneToMany(mappedBy = "conference" , cascade =  { CascadeType.ALL, CascadeType.PERSIST })
+    private List<QueryConference> queryConferenceList;
+
+
     public Integer getId() {
         return id;
     }
@@ -166,4 +173,48 @@ public class Conference {
     public void setDescription(String description) {
         this.description = description;
     }
+
+    public void addOffers(Offer offer){
+        this.offers.add(offer);
+    }
+
+    public void removeOffers(Offer offer){
+        this.offers.add(offer);
+    }
+
+    public void addSpeaker(Speaker speaker){
+        this.speakers.add(speaker);
+    }
+
+    public void removeSpeaker(Speaker speaker){
+        this.speakers.remove(speaker);
+    }
+
+    public void addQuery(QueryConference queryConference){
+        this.queryConferenceList.add(queryConference);
+
+    }
+
+    public void  removeQuery(QueryConference queryConference){
+        this.queryConferenceList.remove(queryConference);
+
+    }
+
+    public List<Offer> getOffers() {
+        return offers;
+    }
+
+    public void setOffers(List<Offer> offers) {
+        this.offers = offers;
+    }
+
+
+    public List<QueryConference> getQueryConferenceList() {
+        return queryConferenceList;
+    }
+
+    public void setQueryConferenceList(List<QueryConference> queryConferenceList) {
+        this.queryConferenceList = queryConferenceList;
+    }
+
 }
