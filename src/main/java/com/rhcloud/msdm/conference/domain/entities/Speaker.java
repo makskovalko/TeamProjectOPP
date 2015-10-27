@@ -80,6 +80,7 @@ public class Speaker extends User {
     @ManyToMany(fetch = FetchType.EAGER, mappedBy = "speakers")
     private List<Conference> conferences = new ArrayList<Conference>();
 
+
     public String getConfirmationKey() {
         return confirmationKey;
     }
@@ -219,5 +220,4 @@ public class Speaker extends User {
         return String.format("[\n\tusername: %s\n\tpassword: %s\n\tfirstName: %s\n\tlastName: %s\n\te-mail: %s\n\tphoneNumber: %s\n]",
                 userName, password, firstName, lastName, email, phoneNumber);
     }
-
 }

@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
@@ -59,6 +60,7 @@ public class MainController {
 
         String fileName = user.getUserName();
         if ( fileUploaderService.fileExists(fileName) != null || googleDriveService.download(fileName)) {
+
             model.addAttribute("profileImg", "../resources/ProfileImagesBufferDir/" + fileUploaderService.fileExists(fileName).getName());
         } else {
             model.addAttribute("profileImg", "../resources/img/default.gif");
@@ -101,5 +103,11 @@ public class MainController {
     public UploadStatus upload(@RequestParam("file") MultipartFile file, HttpSession session) throws GeneralSecurityException, IOException {
 
         return fileUploaderService.uploadToLocalMachineAndGoogleDrive(file, ((User) session.getAttribute("user")).getUserName());
+    }
+
+    @RequestMapping(value = "/ticket", method = RequestMethod.GET)
+    public ModelAndView getParticipantTicket() {
+
+        return new ModelAndView("ticketPDF", "data", null);
     }
 }

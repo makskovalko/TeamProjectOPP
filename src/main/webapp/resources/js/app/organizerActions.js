@@ -62,13 +62,15 @@ var organizerActions = (function() {
 
     function searchConference() {
         var search = $("#search").val();
-        alert(search);
         $.ajax({
-            type: "POST",
-            data: search,
-            url: "/search_conference",
+            type: "GET",
+            url: "/search_conference/" + search,
             success: function(data) {
-                alert(data);
+                var conferences = JSON.parse(data);
+                for (var i = 0; i < conferences.length; i++) {
+                    var conf = JSON.parse(conferences[i]);
+                    alert(JSON.stringify(conf));
+                }
             }
         });
     }

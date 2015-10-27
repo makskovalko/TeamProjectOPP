@@ -14,11 +14,30 @@
         http://www.springframework.org/schema/data/jpa
         http://www.springframework.org/schema/data/jpa/spring-jpa.xsd">
 
+    <bean class = "org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">
+        <property name="messageConverters">
+            <array>
+                <bean class = "org.springframework.http.converter.StringHttpMessageConverter">
+                    <property name="supportedMediaTypes" value = "text/plain;charset=UTF-8" />
+                </bean>
+            </array>
+        </property>
+    </bean>
+
     <mvc:annotation-driven/>
     <mvc:resources mapping="/resources/**" location="/resources/"/>
 
     <context:component-scan base-package="com.rhcloud.msdm.conference"/>
     <context:property-placeholder location="classpath:config.properties" system-properties-mode="ENVIRONMENT"/>
+
+
+    <bean class="org.springframework.web.servlet.mvc.support.ControllerClassNameHandlerMapping" />
+
+    <bean class="org.springframework.web.servlet.view.XmlViewResolver">
+        <property name="location">
+            <value>/WEB-INF/spring-pdf-views.xml</value>
+        </property>
+    </bean>
 
     <bean id="templateResolver"
           class="org.thymeleaf.templateresolver.ServletContextTemplateResolver">
@@ -117,13 +136,5 @@
           c:pathToServiceAccountPrivateKeyFromP12File="${google.drive.pathToServiceAccountPrivateKeyFromP12File}"
           c:pathToBufferDir="${upload.pathToBufferDir}"
           c:appName="${google.drive.appName}"/>
-
-    <bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
-        <property name="objectMapper">
-            <bean class="org.springframework.http.converter.json.Jackson2ObjectMapperFactoryBean"
-                  p:autoDetectFields="true"
-                  p:autoDetectGettersSetters="true" />
-        </property>
-    </bean>
 
 </beans>

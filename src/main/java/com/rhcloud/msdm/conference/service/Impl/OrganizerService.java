@@ -3,7 +3,7 @@ package com.rhcloud.msdm.conference.service.Impl;
 import com.rhcloud.msdm.conference.domain.entities.Category;
 import com.rhcloud.msdm.conference.domain.entities.Conference;
 import com.rhcloud.msdm.conference.domain.entities.Organizer;
-import com.rhcloud.msdm.conference.domain.pojo.ConferenceJSON;
+import com.rhcloud.msdm.conference.utils.JSON_POJO.ConferenceJSON;
 import com.rhcloud.msdm.conference.repository.CategoryRepository;
 import com.rhcloud.msdm.conference.repository.ConferenceRepository;
 import com.rhcloud.msdm.conference.repository.OrganizerRepository;
@@ -51,8 +51,7 @@ public class OrganizerService implements OrganizerActions {
         return conference;
     }
 
-    @Override
     public List<Conference> findConferencesByName(String name) {
-        return conferenceRepository.findAllConferencesByName(name);
+        return conferenceRepository.findAllConferencesByNameContaining(name);
     }
 }

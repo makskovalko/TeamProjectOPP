@@ -54,8 +54,8 @@
         <a href="#" data-activates="mobile" class="button-collapse"><i class="material-icons">menu</i></a>
         <ul class="right hide-on-med-and-down">
             <li>
-                <a class="waves-effect waves-light btn-large green lighten-2"><i class="material-icons right">credit_card</i>Buy
-                    ticket</a>
+
+                <a class="waves-effect waves-light btn-large green lighten-2 modal-trigger" href="#modal1"><i class="material-icons right">credit_card</i>Buy ticket</a>
             </li>
             <li>
                 <a href="#" style="font-size: 18px">
@@ -262,6 +262,70 @@
     </div>
 </footer>
 
+<!--Form for ticket reservation-->
+<div id="modal1" class="modal">
+    <div class="modal-content">
+        <h4 th:text="${'Билет на конференцию ' + conferenceData.name}">Modal Header</h4>
+        <div id="content">
+            <table>
+                <thead>
+                <tr>
+                    <th data-field="id">Количество свободных мест</th>
+                    <th data-field="name">Цена билета</th>
+                    <th data-field="name">Дата проведения</th>
+                    <th data-field="price">Способы оплаты</th>
+                </tr>
+                </thead>
+
+                <tbody>
+                <tr>
+                    <td th:text="${conferenceData.participantLimit - conferenceData.participantCount}">100</td>
+                    <td th:text="${conferenceData.ticketPrice}">1500 грн.</td>
+                    <td th:text="${#dates.format(conferenceData.date, 'dd.MM.yyyy')}"></td>
+                    <td>
+                        <img style="height: 100px;" src="http://php5shop.com/getfile/pay_type/privat24.png" alt="Privat24" />
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+
+            <div class="modal-footer">
+                <a type="button" class="waves-effect waves-green btn" onclick="showPayForm()">Оплатить</a>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!--Form for card data for payment ticket-->
+<div id="card_data" style="display: none;">
+    <div class="row">
+        <div class="input-field col s12">
+            <input id="card_owner" type="text" class="validate" />
+            <label class="active" for="card_owner">Владелец карты</label>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="input-field col s12">
+            <input id="card_number" type="text" class="validate" />
+            <label for="card_number">Номер карты</label>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="input-field col s12">
+            <input id="card_code" type="text" class="validate" />
+            <label for="card_code">Защитный код (введите 4 цифры)</label>
+        </div>
+    </div>
+
+    <div class="modal-footer">
+        <a type="button" class="modal-action modal-close waves-effect waves-green btn" onclick="pay()">Оплатить</a>
+    </div>
+</div>
+
+
 <!--  Scripts-->
 <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
 <script src="../../../resources/js/libs/materialize.js" th:src="'../../resources/js/libs/materialize.js'"></script>
@@ -269,10 +333,49 @@
 <script src="../../../resources/js/app/GoogleMapsService.js"
         th:src="'../../resources/js/app/GoogleMapsService.js'"></script>
 <script src="../../../resources/js/app/conferenceTicketActions.js"
-        th:src="'../../resources/js/app/conferenceTicketActions.js'"></script>
+        th:src="'../resources/js/app/conferenceTicketActions.js'"></script>
 
 <script>
     GoogleMapsService.findByAddressAndShow($("#address").text(), "map");
+</script>
+
+<script type="text/javascript">
+    $(document).ready(function(){
+        // the "href" attribute of .modal-trigger must specify the modal ID that wants to be triggered
+        $('.modal-trigger').leanModal();
+    });
+
+    function showPayForm() {
+        var card_data = $("#card_data");
+        card_data.css("display", "block");
+        $("#content").html(card_data.html());
+    }
+
+    function pay() {
+        var card_owner = $("#card_owner").val();
+        var card_number = $("#card_number").val();
+        var card_code = $("#card_code").val();
+
+        alert(card_owner + ", " + card_number + ", " + card_code);
+        var url = window.location.href;
+        var conference_id = url.substring(url.lastIndexOf('/') + 1, url.length + 1);
+
+        $.ajax({
+            type: 'POST',
+            data: { 'card_owner' : card_owner, 'card_number' : card_number, 'card_code' : card_code, 'conference_id' : conference_id },
+            url: '/participant/buy_ticket',
+            success: function(data) {
+                if (data == "OK") {
+                    Materialize.toast('Билет куплен!', 4000);
+                    setTimeout(function() {
+                        window.location.reload();
+                    }, 2000);
+                }
+            }
+        });
+
+
+    }
 </script>
 
 

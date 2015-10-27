@@ -1,6 +1,7 @@
 package com.rhcloud.msdm.conference.domain.entities;
 
-import com.rhcloud.msdm.conference.domain.pojo.ConferenceJSON;
+
+import com.rhcloud.msdm.conference.utils.JSON_POJO.ConferenceJSON;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
@@ -23,6 +24,8 @@ public class Conference {
         this.date = conferenceJSON.getDate();
         this.participantLimit = conferenceJSON.getParticipantLimit();
         this.description = conferenceJSON.getDescription();
+        this.ticketPrice = conferenceJSON.getTicketPrice();
+        this.participantCount = conferenceJSON.getParticipantCount();
     }
 
     @Id
@@ -35,6 +38,9 @@ public class Conference {
     private String country;
     private String city;
     private String address;
+
+    @Column(name = "ticket_price")
+    private String ticketPrice;
 
     @Column(name = "description", columnDefinition = "TEXT")
     private String description;
@@ -168,5 +174,18 @@ public class Conference {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getTicketPrice() {
+        return ticketPrice;
+    }
+
+    public void setTicketPrice(String ticketPrice) {
+        this.ticketPrice = ticketPrice;
+    }
+
+    @Override
+    public String toString() {
+        return String.format("%s\n, %s\n, %s\n, %s\n, %s\n, %s\n, %s\n, %s\n, %s", name, country, city, address, description, participantLimit, organizer.getId(), category.getId(), date);
     }
 }

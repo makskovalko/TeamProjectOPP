@@ -32,4 +32,9 @@ public class ConferenceTicketService implements ConferenceTicketActions {
         }
         return conferenceRepository.findAllConferenceByIdBetween(lastConferenceID - number, number + 1);
     }
+
+    @Override
+    public void buyTicket(Integer conferenceId) {
+        conferenceRepository.buyTicket(conferenceId);
+    }
 }

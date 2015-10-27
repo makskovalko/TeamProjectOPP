@@ -165,45 +165,40 @@
 
     <div class="col s12 m7" style="margin-top: 10px;">
         <div class="row">
-
-            <div class="row">
-                <div class="card">
-                    <div class="col s11">
-                        <ul class="tabs" style="display:block;">
-                            <li class="tab col s12 m4"><a class="active" href="#test1">Все конференции</a></li>
-                            <li class="tab col s12 m4"><a href="#create_conference">Создать</a></li>
-                            <li class="tab col s12 m4"><a href="#test3">Управление</a></li>
-                        </ul>
-                    </div>
-                    <div id="test1" class="col s12">
-                        <div class="row">
-                            <div class="input-field col s8" style="margin-right: 7px;">
-                                <input id="search" type="text" class="validate"/>
-                                <label for="search">Найти конференцию</label>
-                            </div>
-                            <div class="col s3">
-                                <a onclick="searchConference()" type="button" class="waves-effect waves-light btn"
-                                   style="margin-top: 30px;"><i class="material-icons left">search</i>Найти</a>
-                            </div>
+                    <div class="row">
+                        <div class="card">
+                        <div class="col s11">
+                            <ul class="tabs" style="display:block;">
+                                <li class="tab col s12 m4"><a class="active" href="#test1">Все конференции</a></li>
+                                <li class="tab col s12 m4"><a href="#create_conference">Создать</a></li>
+                                <li class="tab col s12 m4"><a href="#test3">Управление</a></li>
+                            </ul>
                         </div>
+                        <div id="test1" class="col s12">
+                            <div class="row">
+                                <div class="input-field col s8" style="margin-right: 7px;">
+                                    <input id="search" type="text" class="validate" />
+                                    <label for="search">Найти конференцию</label>
+                                </div>
+                                <div class="col s3">
+                                    <a onclick="organizerActions.searchConference()" type="button" class="waves-effect waves-light btn" style="margin-top: 30px;"><i class="material-icons left">search</i>Найти</a>
+                                </div>
 
-
-                        <div class="row">
-                            <div class="col s12 m6" th:each="conference : ${allConferences}">
-                                <div class="card small brown darken-1">
-                                    <div class="card-content white-text">
-                                        <span class="card-title" th:text="${conference.name}">Card Title</span>
-
-                                        <p th:text="${conference.description}">I am a very simple card. I am good at
-                                            containing small bits of information.
-                                            I am convenient because I require little markup to use effectively.
-                                        </p>
-                                    </div>
-                                    <div class="card-action right">
-                                        <a href="#">Подробнее</a>
-                                        <a href="#" th:text="${#dates.format(conference.date, 'dd.MM.yyyy')}"
-                                           style="position: absolute; right:0; color: #fff;">Date
-                                        </a>
+                            <div class="row" id="confs">
+                                <div id="all_conferences" class="col s12 m6" th:each="conference : ${allConferences}">
+                                    <div class="card small brown darken-1" id="conferences">
+                                        <div class="card-content white-text">
+                                            <span class="card-title" th:text="${conference.name}">Card Title</span>
+                                            <p th:text="${conference.description}">I am a very simple card. I am good at containing small bits of information.
+                                                I am convenient because I require little markup to use effectively.
+                                            </p>
+                                        </div>
+                                        <div class="card-action right">
+                                            <a href="#" th:href="'/conference/' + ${conference.id}">Подробнее</a>
+                                            <a href="#" th:text="${#dates.format(conference.date, 'dd.MM.yyyy')}"
+                                               style="position: absolute; right:0; color: #fff;">Date
+                                            </a>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -262,6 +257,13 @@
 
                                     <div class="row">
                                         <div class="input-field col s12">
+                                            <input id="ticketPrice" type="text" class="validate"/>
+                                            <label for="ticketPrice" data-error="wrong" data-success="right">Стоимость билета</label>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="input-field col s12">
                                             <select name="category" id="category">
                                                 <option th:each="conference : ${conferenceCategories}"
                                                         th:value="${conference.id}"
@@ -299,7 +301,6 @@
                             <div class="col s11">
                                 <div class="card small" th:each="conference : ${myCreatedConferences}">
                                     <h5 th:text="${conference.name}">Conference name</h5>
-
                                     <p th:text="${conference.description}">Conference description</p>
                                 </div>
                             </div>
@@ -342,19 +343,6 @@
         $('.tooltipped').tooltip({delay: 50});
         $('#description').trigger('autoresize');
     });
-
-    function searchConference() {
-        var search = $("#search").val();
-        alert(search);
-        $.ajax({
-            type: "POST",
-            data: ({search: search}),
-            url: "/search_conference",
-            success: function (data) {
-                alert(JSON.stringify(data));
-            }
-        });
-    }
 </script>
 
 </body>

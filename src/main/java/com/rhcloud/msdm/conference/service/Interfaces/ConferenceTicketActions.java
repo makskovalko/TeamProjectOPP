@@ -10,5 +10,6 @@ public interface ConferenceTicketActions {
 
     List<Conference> getLastConferences(Integer number);
 
+    void buyTicket(Integer conferenceId);
 
 }

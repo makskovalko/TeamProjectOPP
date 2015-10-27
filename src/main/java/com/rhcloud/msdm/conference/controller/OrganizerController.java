@@ -1,14 +1,18 @@
 package com.rhcloud.msdm.conference.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.rhcloud.msdm.conference.domain.entities.Conference;
 import com.rhcloud.msdm.conference.domain.entities.Organizer;
-import com.rhcloud.msdm.conference.domain.pojo.ConferenceJSON;
+import com.rhcloud.msdm.conference.utils.JSON_POJO.ConferenceJSON;
 import com.rhcloud.msdm.conference.service.Impl.OrganizerService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
-import javax.swing.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -37,10 +41,37 @@ public class OrganizerController {
         return "OK";
     }
 
-    @RequestMapping(value = "/search_conference", method = RequestMethod.POST)
-    public List<Conference> searchConferences(@RequestParam(value = "search") String searchString) {
+    @RequestMapping(value = "/search_conference/{search}", method = RequestMethod.GET)
+    public ResponseEntity<String> searchConferences(@PathVariable("search") String searchString) {
+
+        System.err.println(searchString);
+
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.add("Content-type", "text/plain;charset=UTF-8");
+
         List<Conference> conferenceList = organizerService.findConferencesByName(searchString);
-        for (Conference conference : conferenceList) JOptionPane.showMessageDialog(null, conference.getName());
-        return conferenceList;
+        String resultJson = "";
+        List<String> conferenceJSONList = new ArrayList<String>();
+
+        for (Conference conference : conferenceList) {
+            ConferenceJSON conferenceJSON = new ConferenceJSON(conference);
+            ObjectMapper mapper = new ObjectMapper();
+            String json = "";
+            try {
+                json = mapper.writeValueAsString(conferenceJSON);
+                conferenceJSONList.add(json);
+            } catch (JsonProcessingException e) {
+                return new ResponseEntity<String>("Fail", httpHeaders, org.springframework.http.HttpStatus.OK);
+            }
+        }
+
+        ObjectMapper mapper = new ObjectMapper();
+
+        try {
+            resultJson = mapper.writeValueAsString(conferenceJSONList);
+        } catch (JsonProcessingException e) {
+            return new ResponseEntity<String>("Fail", httpHeaders, org.springframework.http.HttpStatus.OK);
+        }
+        return new ResponseEntity<String>(resultJson, httpHeaders, org.springframework.http.HttpStatus.OK);
     }
 }

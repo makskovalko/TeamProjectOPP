@@ -1,4 +1,3 @@
-
 function increment_count(){ //извращение с количеством пользователей
     Materialize.showStaggeredList(".how_much_participants_in_conference");
     var count = $("#participantCount").text(); //сюда подставить из базы
@@ -20,6 +19,16 @@ function increment_count(){ //извращение с количеством п�
         }
     }, 10);
 }
+
+var ticketActions = (function() {
+    function pay() {
+        alert("OK");
+    }
+
+    return {
+        pay : pay
+    }
+})();
 
 
 $(document).ready(function(){ //всякие штуки materialize
