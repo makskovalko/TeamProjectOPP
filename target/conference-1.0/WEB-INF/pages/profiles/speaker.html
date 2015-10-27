@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no"/>
+    <title>Participant Profile</title>
+
+    <!-- CSS  -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
+    <link href="../../../resources/css/materialize.css" th:href="'../resources/css/materialize.css'" type="text/css"
+          rel="stylesheet" media="screen,projection"/>
+    <link href="../../../resources/css/style.css" th:href="'../resources/css/style.css'" type="text/css"
+          rel="stylesheet" media="screen,projection"/>
+
+    <style>
+        /*body {
+            background: url(../../../resources/img/conference.jpg);
+            background-size: cover;
+        }*/
+
+        .collapsible-header {
+            background: #311b92;
+            color: white;
+        }
+
+        .tabs {
+            color: #4a148c;
+        }
+
+        #category {
+            overflow: scroll;
+        }
+
+        body {
+            /*background: url(http://i.stack.imgur.com/IehB7.png);*/
+            background: url("http://i38.tinypic.com/34tbm38.jpg") fixed;
+        }
+    </style>
+
+</head>
+<body>
+<nav class="white" role="navigation">
+    <div class="nav-wrapper container">
+        <a id="logo-container" href="#" class="brand-logo">Conference System</a>
+        <ul class="right hide-on-med-and-down">
+            <div th:if="${session.user != null}">
+                <li><a th:href="'/profile/' + ${session.user.userType}"
+                       th:text="'Добро пожаловать, ' + ${session.user.userName} + '!'">Welcome<i
+                        class="material-icons right">perm_identity</i></a></li>
+
+                <li><a href="/logOut"><i class="material-icons left">power_settings_new</i>Выйти</a></li>
+            </div>
+        </ul>
+
+        <ul id="nav-mobile" class="side-nav">
+            <div th:if="${session.user != null}">
+                <div class="row">
+                    <li><a th:href="'/profile/' + ${session.user.userType}"
+                           th:text="'Добро пожаловать, ' + ${session.user.userName} + '!'">Welcome<i
+                            class="material-icons right">perm_identity</i></a></li>
+                </div>
+                <div class="row">
+                    <li><a href="/logOut"><i class="material-icons left">power_settings_new</i>Выйти</a></li>
+                </div>
+            </div>
+        </ul>
+        <a href="#" data-activates="nav-mobile" class="button-collapse"><i class="material-icons">menu</i></a>
+    </div>
+</nav>
+
+
+<div class="row">
+    <div class="col s12 m3">
+
+        <div class="card">
+            <div class="card-image waves-effect waves-block waves-light">
+                <img id="profileImg" class="activator" th:src="${profileImg}"/>
+            </div>
+            <div class="card-content">
+                        <span class="card-title activator grey-text text-darken-4" th:inline="text" id="fullName">
+                            [[${session.user.firstName + ' ' + session.user.lastName}]]
+                            <i class="material-icons right">more_vert</i>
+                        </span>
+
+                <div class="row">
+                    <ul class="collapsible" data-collapsible="expandable">
+                        <li>
+                            <div class="collapsible-header active">Контактные данные</div>
+                            <div class="collapsible-body">
+                                <ul class="collection">
+                                    <i class="material-icons left">phone</i>
+                                    <li id="phoneNumberContactData" class="collection-item"
+                                        th:text="${session.user.phoneNumber}"></li>
+                                    <i class="material-icons left">email</i>
+                                    <li id="emailContactData" class="collection-item"
+                                        th:text="${session.user.email}"></li>
+                                </ul>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+
+            <div class="card-reveal">
+                <span class="card-title grey-text text-darken-4">Редактировать профиль<i class="material-icons right">close</i></span>
+
+                <div class="row">
+                    <form class="col s12">
+                        <div class="row" style="display:none;">
+                            <div class="input-field col s12">
+                                <input id="userName" type="text" class="validate" th:value="${session.user.userName}"/>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="input-field col s12">
+                                <div class="file-field input-field">
+                                    <div class="btn" id="btn_photo_load">
+                                        <span>Загрузить фото профиля</span>
+                                        <input id="profileImage" type="file"/>
+                                    </div>
+                                    <div class="file-path-wrapper">
+                                        <input class="file-path validate" type="text"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="progressUploadingImage"></div>
+                        </div>
+
+                        <div class="row">
+                            <div class="input-field col s12">
+                                <input id="firstName" type="text" class="validate"
+                                       th:value="${session.user.firstName}"/>
+                                <label for="firstName" data-error="wrong" data-success="right">Имя</label>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="input-field col s12">
+                                <input id="lastName" type="text" class="validate" th:value="${session.user.lastName}"/>
+                                <label for="lastName" data-error="wrong" data-success="right">Фамилия</label>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="input-field col s12">
+                                <input id="email" type="email" class="validate" th:value="${session.user.email}"/>
+                                <label for="email" data-error="wrong" data-success="right">E-mail</label>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="input-field col s12">
+                                <input id="phoneNumber" type="tel" class="validate"
+                                       th:value="${session.user.phoneNumber}"/>
+                                <label for="phoneNumber" data-error="wrong" data-success="right">Номер телефона</label>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="input-field col s12">
+                                <input id="dateOfBirth" type="date" class="validate"
+                                       th:value="${#calendars.format(session.user.dateOfBirth,'yyyy-MM-dd')}"/>
+                                <label class="active" for="dateOfBirth">Дата рождения</label>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="input-field col s12">
+                                <button class="btn waves-effect waves-light" type="button" name="action"
+                                        onclick="participantActions.saveData()">Сохранить
+                                    <i class="material-icons left">done</i>
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col s12 m7" style="margin-top: 10px;">
+        <div class="row">
+
+            <div class="row">
+                <div id="test1" class="col s12">
+                    <div class="col s11">
+                        <div class="input-field col s8" style="margin-right: 7px;">
+                            <input id="search" type="text" class="validate" />
+                            <label for="search">Найти конференцию</label>
+                        </div>
+                        <div class="col s3">
+                            <a onclick="organizerActions.searchConference()" type="button" class="waves-effect waves-light btn" style="margin-top: 30px;"><i class="material-icons left">search</i>Найти</a>
+                        </div>
+
+                        <div class="row" id="confs">
+                            <div class="col s12 m6" th:each="conference : ${lastConferences}">
+                                <div class="card small" th:style="'background-color:' + ${conference.category.color}">
+                                    <div class="card-content white-text">
+                                        <span class="card-title" th:text="${conference.name}">Card Title</span>
+
+                                        <p th:text="${conference.description}">I am a very simple card. I am good at
+                                            containing small bits of information.
+                                            I am convenient because I require little markup to use effectively.
+                                        </p>
+                                    </div>
+                                    <div class="card-action right">
+                                        <a th:href="'/conference/' + ${conference.id}">Подробнее</a>
+                                        <a href="#followConference" onclick="speakerActions.addToUserObject(this)" th:id="${conference.id}" th:alt="${conference.organizer.id}" class="modal-trigger">Стать спикером</a>
+                                        <a href="#" th:text="${#dates.format(conference.date, 'dd.MM.yyyy')}"
+                                           style="position: absolute; right:0; color: #fff;">Date
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="followConference" class="modal modal-fixed-footer">
+        <div class="modal-content">
+            <div class="row" style="color: black">
+                <div class="input-field col s8" style="margin-right: 7px;">
+                    <input id="topic" type="text" class="validate" />
+                    <label for="topic">Topic</label>
+                </div>
+                <div class="input-field col s8" style="margin-right: 7px;">
+                    <textarea id="description" class="validate materialize-textarea" ></textarea>
+                    <label for="description">Description</label>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <a href="#!" th:id="${session.user.id}" onclick="speakerActions.sendMessageToOrganizer(this)" class=" modal-action modal-close waves-effect waves-green btn-flat">Send</a>
+        </div>
+    </div>
+
+    <div class="col s12 m2" style="margin-top: 80px;">
+        <div class="row">
+            <div class="input-field col s8" style="margin-right: 7px;">
+                <input id="country_filter" type="text" class="validate" />
+                <label for="country_filter">Страна</label>
+            </div>
+            <div class="input-field col s8" style="margin-right: 7px;">
+                <input id="city_filter-limit"  type="text" class="validate" />
+                <label for="city_filter-limit">Город</label>
+            </div>
+            <a class="waves-effect waves-light btn"><i class="material-icons left">cloud</i>Найти</a>
+        </div>
+    </div>
+</div>
+
+<!--  Scripts-->
+<script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+<script src="../../../resources/js/libs/materialize.js" th:src="'../resources/js/libs/materialize.js'"></script>
+<script src="../../../resources/js/libs/init.js" th:src="'../resources/js/libs/init.js'"></script>
+<script src="../../../resources/js/libs/date.js" th:src="'../resources/js/libs/date.js'"></script>
+<script src="../../../resources/js/app/participantActions.js" th:src="'../resources/js/app/participantActions.js'"></script>
+<script src="../../../resources/js/app/organizerActions.js" th:src="'../resources/js/app/organizerActions.js'"></script>
+<script src="../../../resources/js/app/speakerActions.js" th:src="'../resources/js/app/speakerActions.js'"></script>
+<script src="../../../resources/js/app/userManager.js" th:src="'../resources/js/app/userManager.js'"></script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('.collapsible').collapsible({
+            accordion: false // A setting that changes the collapsible behavior to expandable instead of the default accordion style
+        });
+
+        $('.modal-trigger').leanModal();
+    });
+</script>
+
+</body>
+</html>
+
+<!--
+<div class="col s12 m6" th:each="conference : ${userConferences}">
+    <div class="card small" th:style="'background-color:' + ${conference.category.color}">
+        <div class="card-content white-text">
+            <span class="card-title" th:text="${conference.name}"></span>
+
+            <p th:text="${conference.description}"></p>
+        </div>
+        <div class="card-action right">
+            <a th:href="'/conference/' + ${conference.id}">Подробнее</a>
+            <a href="#" th:text="${#dates.format(conference.date, 'dd.MM.yyyy')}"
+               style="position: absolute; right:0; color: #fff;">Date
+            </a>
+        </div>
+    </div>
+</div>-->
