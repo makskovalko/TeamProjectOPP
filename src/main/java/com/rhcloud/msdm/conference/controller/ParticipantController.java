@@ -1,6 +1,5 @@
 package com.rhcloud.msdm.conference.controller;
 
-import com.rhcloud.msdm.conference.domain.entities.Conference;
 import com.rhcloud.msdm.conference.domain.entities.Participant;
 import com.rhcloud.msdm.conference.domain.entities.User;
 
@@ -80,13 +79,7 @@ public class ParticipantController {
         session.setAttribute("cardCode", cardCode);
 
         conferenceTicketActions.buyTicket(Integer.valueOf(conference_id));
-        Participant participant = (Participant) session.getAttribute("user");
 
-        Conference conference = conferenceTicketActions.getConferenceById(Integer.valueOf(conference_id));
-        List<Conference> conferenceList = new ArrayList<>();
-        conference.getParticipants().add(participant);
-        conferenceList.add(conference);
-        participant.setConferences(conferenceList);
 
         session.setAttribute("conference", conferenceTicketActions.getConferenceById(Integer.valueOf(conference_id)));
         return "OK";

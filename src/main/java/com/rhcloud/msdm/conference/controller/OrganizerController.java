@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.rhcloud.msdm.conference.domain.entities.Conference;
 import com.rhcloud.msdm.conference.domain.entities.Messages;
 import com.rhcloud.msdm.conference.domain.entities.Organizer;
+import com.rhcloud.msdm.conference.repository.MessagesRepository;
 import com.rhcloud.msdm.conference.utils.JSON_POJO.ConferenceJSON;
 import com.rhcloud.msdm.conference.service.Impl.OrganizerService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,12 @@ import javax.servlet.http.HttpSession;
 import javax.swing.*;
 import java.util.ArrayList;
 import java.util.Arrays;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import javax.annotation.Resource;
+import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -24,6 +31,8 @@ public class OrganizerController {
 
     @Autowired
     private OrganizerService organizerService;
+    @Resource(name = "messagesRepository")
+    private MessagesRepository messagesRepository;
 
     @RequestMapping(value = "/updateOrganizerData", method = RequestMethod.POST)
     public String updateOrganizerData(@RequestBody Organizer organizer, HttpSession session) {
@@ -136,4 +145,11 @@ public class OrganizerController {
 
         return new ResponseEntity<String>(resultJson, httpHeaders, HttpStatus.OK);
     }
+
+    @RequestMapping(value = "/checkMessages/{id}", method = RequestMethod.GET)
+    public Integer checkMessages(@PathVariable("id") Integer id){
+
+        return messagesRepository.getCountMassageForUser(id);
+    }
+
 }

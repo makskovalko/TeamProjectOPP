@@ -1,5 +1,23 @@
 var organizerActions = (function() {
 
+    var count = 0;
+
+    window.setInterval(function(){
+        $.ajax({
+            type: 'GET',
+            url: '/checkMessages/' + $("#userID").text(),
+            success: function(data) {
+                if(count === 0){
+                    count = data;
+                } else if(count < data){
+                    Materialize.toast("У Вас новое сообщение", 2000);
+                    count = data;
+                }
+            }
+        });
+    },2000);
+
+
     function saveData() {
         var organizer = {};
 
@@ -40,9 +58,9 @@ var organizerActions = (function() {
         conference.description = $("#description").val();
         conference.organizerId = $("#organizer_id").val();
         conference.participantCount = 0;
-        conference.ticketPrice = $("#ticketPrice").val();
 
-        conference = JSON.stringify(conference);
+        alert(JSON.stringify(conference));
+        conference = encodeURIComponent(JSON.stringify(conference));
 
         $.ajax({
             type: 'POST',
@@ -62,10 +80,10 @@ var organizerActions = (function() {
 
     function searchConference() {
         var search = $("#search").val();
+
         $.ajax({
-            type: "POST",
-            data: ({search: search}),
-            url: "/search_conference",
+            type: "GET",
+            url: "/search_conference/" + (search === ""? "_": search),
             success: function(data) {
                 var conferences = JSON.parse(data);
                 var confs = "";
@@ -90,7 +108,7 @@ var organizerActions = (function() {
 
                         confs +=
                             '<div id="all_conferences" class="col s12 m6">' +
-                            '<div class="card small brown darken-1" id="conferences">' +
+                            '<div class="card small" style="background-color:'+conf.color+'" id="conferences">' +
                             '<div class="card-content white-text">' +
                             '<span class="card-title">' + conf.name + '</span>' +
                             '<p>' + conf.description +
@@ -107,10 +125,10 @@ var organizerActions = (function() {
                     $("#confs").html(confs);
 
                 }, 2000);
+
             }
         });
     }
-
 
     function addZero(x) {
         if (x.toString().length == 1) x = "0" + x;
@@ -120,6 +138,6 @@ var organizerActions = (function() {
     return {
         saveData: saveData,
         createConference: createConference,
-        searchConference: searchConference,
+        searchConference: searchConference
     }
 })();

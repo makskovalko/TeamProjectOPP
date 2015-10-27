@@ -52,7 +52,7 @@ public class Conference {
     @ManyToOne
     private Organizer organizer;
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = { CascadeType.ALL })
+    @ManyToMany
     @LazyCollection(LazyCollectionOption.FALSE)
     @JoinTable(name = "CONFERENCE_PARTICIPANT", joinColumns = {@JoinColumn(name = "conference_id")},
             inverseJoinColumns = {@JoinColumn(name = "participant_id")})

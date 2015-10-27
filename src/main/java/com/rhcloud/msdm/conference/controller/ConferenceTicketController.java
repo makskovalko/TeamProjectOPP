@@ -58,7 +58,6 @@ public class ConferenceTicketController {
     }*/
 
 
-
     public String getDayOfWeek(Date date){
         Calendar c = Calendar.getInstance();
         c.set(date.getYear(), date.getMonth(), date.getDay());

@@ -78,17 +78,19 @@ public class OrganizerService implements OrganizerActions {
 
     public List<Conference> findConferencesByCountryOrCityAndCategory_IdIn(String country, String city, List<Integer> categoryId) {
         return conferenceRepository.findConferencesByCountryOrCityAndCategory_IdIn(country, city, categoryId);
+    }
 
+    @Override
+    public Messages sendMessage(MessageJSON messageJSON){
+
+       Messages message = new Messages(messageJSON.getConferenceId(), messageJSON.getUserId(), messageJSON.getTopic(), messageJSON.getDescription());
+        message.setOrganizer(organizerRepository.findOne(messageJSON.getOrganizerId()));
+        messagesRepository.saveAndFlush(message);
+        return message;
     }
 
     @Override
     public Organizer getOrganizerById(Integer id) {
         return organizerRepository.findOne(id);
     }
-
-    @Override
-    public Messages sendMessage(MessageJSON messageJSON) {
-        return null;
-    }
-
 }
