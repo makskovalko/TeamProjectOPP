@@ -1,16 +1,18 @@
 package com.rhcloud.msdm.conference.service.Impl;
 
-import com.rhcloud.msdm.conference.domain.entities.Category;
-import com.rhcloud.msdm.conference.domain.entities.Conference;
-import com.rhcloud.msdm.conference.domain.entities.Organizer;
+import com.rhcloud.msdm.conference.domain.entities.*;
+import com.rhcloud.msdm.conference.repository.MessagesRepository;
 import com.rhcloud.msdm.conference.utils.JSON_POJO.ConferenceJSON;
 import com.rhcloud.msdm.conference.repository.CategoryRepository;
 import com.rhcloud.msdm.conference.repository.ConferenceRepository;
 import com.rhcloud.msdm.conference.repository.OrganizerRepository;
 import com.rhcloud.msdm.conference.service.Interfaces.OrganizerActions;
+import com.rhcloud.msdm.conference.utils.JSON_POJO.MessageJSON;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import javax.annotation.Resource;
 import java.util.List;
 
 @Service
@@ -19,6 +21,9 @@ public class OrganizerService implements OrganizerActions {
     @Autowired private OrganizerRepository organizerRepository;
     @Autowired private ConferenceRepository conferenceRepository;
     @Autowired private CategoryRepository categoryRepository;
+
+    @Resource(name = "messagesRepository")
+    private MessagesRepository messagesRepository;
 
     @Override
     public void updateData(Organizer organizer) {
@@ -54,4 +59,19 @@ public class OrganizerService implements OrganizerActions {
     public List<Conference> findConferencesByName(String name) {
         return conferenceRepository.findAllConferencesByNameContaining(name);
     }
+
+    @Override
+    public Messages sendMessage(MessageJSON messageJSON){
+
+       Messages message = new Messages(messageJSON.getConferenceId(), messageJSON.getUserId(), messageJSON.getTopic(), messageJSON.getDescription());
+        message.setOrganizer(organizerRepository.findOne(messageJSON.getOrganizerId()));
+        messagesRepository.saveAndFlush(message);
+        return message;
+    }
+
+    @Override
+    public Organizer getOrganizerById(Integer id) {
+        return organizerRepository.findOne(id);
+    }
+
 }

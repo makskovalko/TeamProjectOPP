@@ -75,7 +75,7 @@ public class MainController {
     @RequestMapping(value = "/profile/organizer", method = RequestMethod.GET)
     public String organizerView(ModelMap modelMap, HttpSession session) {
         modelMap.addAttribute("conferenceCategories", categoryRepository.findAll());
-        modelMap.addAttribute("allConferences", conferenceRepository.findAll());
+        modelMap.addAttribute("allConferences", conferenceTicketActions.getLastConferences(10));
         modelMap.addAttribute("myCreatedConferences",
                 conferenceRepository.findAllConferencesByOrganizerId(((Organizer) session.getAttribute("user")).getId()));
         return "profiles/organizer";
@@ -94,6 +94,7 @@ public class MainController {
         }
 
         model.addAttribute("userConferences", speakerActions.getUserConferences(user.getId()));
+        model.addAttribute("lastConferences", conferenceTicketActions.getLastConferences(10));
 
         return "profiles/speaker";
     }

@@ -1,6 +1,8 @@
 package com.rhcloud.msdm.conference.domain.entities;
 
 import org.apache.commons.codec.digest.DigestUtils;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -70,6 +72,10 @@ public class Organizer extends User {
     @OneToMany
     @JoinColumn(name = "conference_id")
     private List<Conference> conferences = new ArrayList<Conference>();
+
+    @OneToMany
+    @JoinColumn(name = "organizer")
+    private List<Messages> messages = new ArrayList<>();
 
     public Integer getId() {
         return id;
@@ -179,6 +185,14 @@ public class Organizer extends User {
 
     public String getConfirmURL() {
         return "http://localhost:8080/confirm_email/organizer/" + userName + "/" + confirmationKey;
+    }
+
+    public List<Messages> getMessages() {
+        return messages;
+    }
+
+    public void setMessages(List<Messages> messages) {
+        this.messages = messages;
     }
 
     @Override

@@ -1,5 +1,15 @@
 var organizerActions = (function() {
 
+    window.setInterval(function(){
+        $.ajax({
+            type: 'GET',
+            url: '/checkMessages',
+            success: function(data) {
+
+            }
+        });
+    },1000);
+
     function saveData() {
         var organizer = {};
 
@@ -62,17 +72,59 @@ var organizerActions = (function() {
 
     function searchConference() {
         var search = $("#search").val();
+
         $.ajax({
             type: "GET",
-            url: "/search_conference/" + search,
+            url: "/search_conference/" + (search === ""? "_": search),
             success: function(data) {
                 var conferences = JSON.parse(data);
-                for (var i = 0; i < conferences.length; i++) {
-                    var conf = JSON.parse(conferences[i]);
-                    alert(JSON.stringify(conf));
-                }
+                var confs = "";
+
+                $("#confs").html('<div class="row"><div class="progress" style=""><div class="indeterminate""></div></div></div>');
+
+                setTimeout(function() {
+
+                    if (conferences.length == 0) {
+                        $("#confs").html("<div class='col s12 m12'><h5>Ничего не найдено!</h5></div>");
+                        return;
+                    }
+
+                    $("#confs").html("");
+                    conferences.forEach(function(item, index, conferences) {
+                        var conf = JSON.parse(item);
+                        var time = new Date(conf.date);
+                        var day = addZero(time.getDay());
+                        var month = addZero(time.getMonth());
+                        var year = addZero(time.getYear());
+                        var date = day + "/" + month + "/" + year;
+
+                        confs +=
+                            '<div id="all_conferences" class="col s12 m6">' +
+                            '<div class="card small" style="background-color:'+conf.color+'" id="conferences">' +
+                            '<div class="card-content white-text">' +
+                            '<span class="card-title">' + conf.name + '</span>' +
+                            '<p>' + conf.description +
+                            '</p>' +
+                            '</div>' +
+                            '<div class="card-action right">' +
+                            '<a href="/conference/'+ conf.id +'">Подробнее</a>' +
+                            '<a href="#" style="position: absolute; right:0; color: #fff;">' + date + '</a>' +
+                            '</div>' +
+                            '</div>' +
+                            '</div>';
+                    });
+
+                    $("#confs").html(confs);
+
+                }, 2000);
+
             }
         });
+    }
+
+    function addZero(x) {
+        if (x.toString().length == 1) x = "0" + x;
+        return x;
     }
 
     return {

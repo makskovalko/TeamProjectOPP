@@ -3,6 +3,7 @@ package com.rhcloud.msdm.conference.controller;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.rhcloud.msdm.conference.domain.entities.Conference;
+import com.rhcloud.msdm.conference.domain.entities.Messages;
 import com.rhcloud.msdm.conference.domain.entities.Organizer;
 import com.rhcloud.msdm.conference.utils.JSON_POJO.ConferenceJSON;
 import com.rhcloud.msdm.conference.service.Impl.OrganizerService;
@@ -44,8 +45,6 @@ public class OrganizerController {
     @RequestMapping(value = "/search_conference/{search}", method = RequestMethod.GET)
     public ResponseEntity<String> searchConferences(@PathVariable("search") String searchString) {
 
-        System.err.println(searchString);
-
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add("Content-type", "text/plain;charset=UTF-8");
 
@@ -74,4 +73,12 @@ public class OrganizerController {
         }
         return new ResponseEntity<String>(resultJson, httpHeaders, org.springframework.http.HttpStatus.OK);
     }
+
+    @RequestMapping(value = "/checkMessages", method = RequestMethod.GET)
+    public List<Messages> checkMessages(){
+
+
+        return null;
+    }
+
 }

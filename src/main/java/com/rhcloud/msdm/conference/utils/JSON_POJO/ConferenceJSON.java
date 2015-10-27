@@ -29,9 +29,10 @@ public class ConferenceJSON {
         this.date = conference.getDate();
         this.ticketPrice = conference.getTicketPrice();
         this.participantCount = conference.getParticipantCount();
+        this.color =  conference.getCategory().getColor();
     }
 
-    private String name, country, city, address, description, ticketPrice;
+    private String name, country, city, address, description, ticketPrice, color;
 
     private Integer participantLimit;
 
@@ -128,6 +129,14 @@ public class ConferenceJSON {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public String getColor() {
+        return color;
+    }
+
+    public void setColor(String color) {
+        this.color = color;
     }
 
     @Override
