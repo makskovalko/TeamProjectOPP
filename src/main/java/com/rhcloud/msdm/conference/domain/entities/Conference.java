@@ -1,6 +1,8 @@
 package com.rhcloud.msdm.conference.domain.entities;
 
 import com.rhcloud.msdm.conference.domain.pojo.ConferenceJSON;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -44,7 +46,8 @@ public class Conference {
     @ManyToOne
     private Organizer organizer;
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = { CascadeType.ALL, CascadeType.PERSIST })
+    @ManyToMany
+    @LazyCollection(LazyCollectionOption.FALSE)
     @JoinTable(name = "CONFERENCE_PARTICIPANT", joinColumns = {@JoinColumn(name = "conference_id")},
             inverseJoinColumns = {@JoinColumn(name = "participant_id")})
     private List<Participant> participants;

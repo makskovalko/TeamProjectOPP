@@ -14,4 +14,6 @@ public interface ParticipantActions {
 
     Participant updateData(ProfileData profileData);
     Participant getParticipantByUserName(String userName);
+
+    List<Conference> getUserConferences(Integer id);
 }

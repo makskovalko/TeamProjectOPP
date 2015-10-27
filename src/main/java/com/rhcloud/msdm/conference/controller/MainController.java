@@ -1,15 +1,15 @@
 package com.rhcloud.msdm.conference.controller;
 
-import com.rhcloud.msdm.conference.domain.entities.Category;
 import com.rhcloud.msdm.conference.domain.entities.Organizer;
 import com.rhcloud.msdm.conference.domain.entities.User;
 import com.rhcloud.msdm.conference.repository.CategoryRepository;
 import com.rhcloud.msdm.conference.repository.ConferenceRepository;
 import com.rhcloud.msdm.conference.service.Interfaces.ConferenceTicketActions;
+import com.rhcloud.msdm.conference.service.Interfaces.ParticipantActions;
+import com.rhcloud.msdm.conference.service.Interfaces.SpeakerActions;
 import com.rhcloud.msdm.conference.utils.FileUploader;
 import com.rhcloud.msdm.conference.utils.GoogleDriveService;
 import com.rhcloud.msdm.conference.utils.UploadStatus;
-import com.rhcloud.msdm.conference.utils.exeptions.BufferDirIsNotDirectoryException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -45,16 +45,26 @@ public class MainController {
     @Resource(name = "categoryRepository")
     private CategoryRepository categoryRepository;
 
+    @Resource(name = "participantActionsService")
+    private ParticipantActions participantActions;
+
+    @Resource(name = "speakerService")
+    private SpeakerActions speakerActions;
+
 
     @RequestMapping(value = "/profile/participant", method = RequestMethod.GET)
     public String participantView(Model model, HttpSession session) throws GeneralSecurityException, IOException {
-        String fileName = ((User) session.getAttribute("user")).getUserName();
+
+        User user = (User) session.getAttribute("user");
+
+        String fileName = user.getUserName();
         if ( fileUploaderService.fileExists(fileName) != null || googleDriveService.download(fileName)) {
             model.addAttribute("profileImg", "../resources/ProfileImagesBufferDir/" + fileUploaderService.fileExists(fileName).getName());
         } else {
             model.addAttribute("profileImg", "../resources/img/default.gif");
         }
 
+        model.addAttribute("userConferences", participantActions.getUserConferences(user.getId()));
         model.addAttribute("lastConferences", conferenceTicketActions.getLastConferences(10));
 
         return "profiles/participant";
@@ -70,7 +80,19 @@ public class MainController {
     }
 
     @RequestMapping(value = "/profile/speaker", method = RequestMethod.GET)
-    public String speakerView() {
+    public String speakerView(Model model, HttpSession session) throws IOException, GeneralSecurityException {
+
+        User user = (User) session.getAttribute("user");
+
+        String fileName = user.getUserName();
+        if ( fileUploaderService.fileExists(fileName) != null || googleDriveService.download(fileName)) {
+            model.addAttribute("profileImg", "../resources/ProfileImagesBufferDir/" + fileUploaderService.fileExists(fileName).getName());
+        } else {
+            model.addAttribute("profileImg", "../resources/img/default.gif");
+        }
+
+        model.addAttribute("userConferences", speakerActions.getUserConferences(user.getId()));
+
         return "profiles/speaker";
     }
 

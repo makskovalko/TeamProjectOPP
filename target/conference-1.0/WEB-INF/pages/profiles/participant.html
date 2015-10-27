@@ -30,8 +30,55 @@
                 <li><a th:href="'/profile/' + ${session.user.userType}"
                        th:text="'Добро пожаловать, ' + ${session.user.userName} + '!'">Welcome<i
                         class="material-icons right">perm_identity</i></a></li>
+
+                <li><a class="modal-trigger" href="#my-conference"><i class="material-icons left">view_quilt</i>My
+                    conferences</a></li>
+                <div id="my-conference" class="modal bottom-sheet">
+                    <div class="modal-content">
+
+
+                        <ul class="collection row" style="color: black">
+                            <li class="collection-item avatar col l12" th:each="userConference : ${userConferences}">
+                                <h6 class="title" th:text="${userConference.name}"></h6>
+                                <p>
+                                    <i class="material-icons circle green">insert_chart</i>
+                                    <a style="color: #ff952c" th:href="'/conference/' + ${userConference.id}">Подробнее</a>
+                                </p>
+
+
+                                <a href="#!" class="secondary-content"><i class="material-icons">grade</i></a>
+                                <a href="#participants" th:id="${userConference.id}" onclick="participantActions.showAllParticipatsForThisConference(this)" class="modal-trigger secondary-content"><i class="material-icons">perm_identity</i>___________</a>
+
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="modal-footer">
+                        <a href="#!" class=" modal-action modal-close waves-effect waves-green btn-flat">Close</a>
+                    </div>
+                </div>
+
                 <li><a href="/logOut"><i class="material-icons left">power_settings_new</i>Выйти</a></li>
             </div>
+
+            <div id="participants" class="modal modal-fixed-footer">
+                <div class="modal-content" style="color: black">
+                    <h4>Все кто к нам присоединился</h4>
+                    <div class="row" id="participantWhoBindWithUs"></div>
+                </div>
+                <div class="modal-footer">
+                    <a href="#!" onclick="participantActions.returnPrewModal()" class="modal-action modal-close waves-effect waves-green btn-flat ">Back</a>
+                </div>
+            </div>
+
+            <div id="participant" class="modal modal-fixed-footer">
+                <div class="modal-content" style="color: black">
+                    <div class="row" id="participantInfo"></div>
+                </div>
+                <div class="modal-footer">
+                    <a href="#!" onclick="" class="modal-action modal-close waves-effect waves-green btn-flat ">Back</a>
+                </div>
+            </div>
+
         </ul>
 
         <ul id="nav-mobile" class="side-nav">
@@ -44,11 +91,15 @@
                 <div class="row">
                     <li><a href="/logOut"><i class="material-icons left">power_settings_new</i>Выйти</a></li>
                 </div>
+                <div class="row">
+                    <a class="waves-effect waves-light btn"><i class="material-icons left">cloud</i>My conferences</a>
+                </div>
             </div>
         </ul>
         <a href="#" data-activates="nav-mobile" class="button-collapse"><i class="material-icons">menu</i></a>
     </div>
 </nav>
+
 
 <div class="row">
     <div class="col s12 m3">
@@ -217,7 +268,10 @@
         $('.collapsible').collapsible({
             accordion: false // A setting that changes the collapsible behavior to expandable instead of the default accordion style
         });
+
+        $('.modal-trigger').leanModal();
     });
+
 </script>
 
 </body>

@@ -42,6 +42,11 @@ public class ParticipantService implements ParticipantActions{
         return newParticipant;
     }
 
+    @Transactional
+    @Override
+    public List<Conference> getUserConferences(Integer id) {
+        return participantRepository.findOne(id).getConferences();
+    }
 
     @Transactional(readOnly = true)
     @Override

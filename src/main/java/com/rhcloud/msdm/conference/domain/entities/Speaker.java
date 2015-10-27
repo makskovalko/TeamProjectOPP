@@ -77,7 +77,7 @@ public class Speaker extends User {
     @Temporal(value = TemporalType.DATE)
     private Date dateOfBirth;
 
-    @ManyToMany(mappedBy = "speakers")
+    @ManyToMany(fetch = FetchType.EAGER, mappedBy = "speakers")
     private List<Conference> conferences = new ArrayList<Conference>();
 
     public String getConfirmationKey() {

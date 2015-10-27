@@ -1,6 +1,8 @@
 package com.rhcloud.msdm.conference.domain.entities;
 
 import org.apache.commons.codec.digest.DigestUtils;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -77,6 +79,7 @@ public class Participant extends User {
     private String userType;
 
     @ManyToMany(mappedBy = "participants")
+    @LazyCollection(LazyCollectionOption.FALSE)
     private List<Conference> conferences = new ArrayList<Conference>();
 
     public Integer getId() {
