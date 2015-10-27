@@ -13,9 +13,10 @@ public interface ConferenceRepository extends JpaRepository<Conference, Integer>
     public List<Conference> findAllConferencesByNameContaining(String name);
 
     List<Conference> findAllConferencesByOrganizerId(Integer organizerId);
+
     List<Conference> findAllConferencesByName(String name);
 
-    List<Conference> findAllConferenceByIdBetween(Integer startID, Integer endID );
+    List<Conference> findAllConferenceByIdBetween(Integer startID, Integer endID);
 
     @Query("select max(c.id) from Conference c")
     Integer findMaxID();
