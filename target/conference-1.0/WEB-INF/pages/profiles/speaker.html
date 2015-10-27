@@ -49,6 +49,31 @@
                        th:text="'Добро пожаловать, ' + ${session.user.userName} + '!'">Welcome<i
                         class="material-icons right">perm_identity</i></a></li>
 
+                <li><a class="modal-trigger" href="#my-conference"><i class="material-icons left">view_quilt</i>My
+                    conferences</a></li>
+                <div id="my-conference" class="modal bottom-sheet">
+                    <div class="modal-content">
+
+
+                        <ul class="collection row" style="color: black">
+                            <li class="collection-item avatar col l12" th:each="userConference : ${userConferences}">
+                                <h6 class="title" th:text="${userConference.name}"></h6>
+                                <p>
+                                    <i class="material-icons circle green">insert_chart</i>
+                                    <a style="color: #ff952c" th:href="'/conference/' + ${userConference.id}">Подробнее</a>
+                                </p>
+
+                                <a href="#!" class="secondary-content"><i class="material-icons">grade</i></a>
+
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="modal-footer">
+                        <a href="#!" class=" modal-action modal-close waves-effect waves-green btn-flat">Close</a>
+                    </div>
+                </div>
+
+
                 <li><a href="/logOut"><i class="material-icons left">power_settings_new</i>Выйти</a></li>
             </div>
         </ul>
@@ -278,19 +303,3 @@
 </body>
 </html>
 
-<!--
-<div class="col s12 m6" th:each="conference : ${userConferences}">
-    <div class="card small" th:style="'background-color:' + ${conference.category.color}">
-        <div class="card-content white-text">
-            <span class="card-title" th:text="${conference.name}"></span>
-
-            <p th:text="${conference.description}"></p>
-        </div>
-        <div class="card-action right">
-            <a th:href="'/conference/' + ${conference.id}">Подробнее</a>
-            <a href="#" th:text="${#dates.format(conference.date, 'dd.MM.yyyy')}"
-               style="position: absolute; right:0; color: #fff;">Date
-            </a>
-        </div>
-    </div>
-</div>-->

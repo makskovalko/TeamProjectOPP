@@ -1,5 +1,23 @@
 var organizerActions = (function() {
 
+    var count = 0;
+
+    window.setInterval(function(){
+        $.ajax({
+            type: 'GET',
+            url: '/checkMessages/' + $("#userID").text(),
+            success: function(data) {
+                if(count === 0){
+                    count = data;
+                } else if(count < data){
+                    Materialize.toast("У Вас новое сообщение", 2000);
+                    count = data;
+                }
+            }
+        });
+    },2000);
+
+
     function saveData() {
         var organizer = {};
 
