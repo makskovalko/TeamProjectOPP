@@ -35,7 +35,7 @@ public class ConferenceTicketController {
     public String conference(@PathVariable("id") Integer id, Model model, HttpSession session) throws IOException, GeneralSecurityException {
 
         Conference conference = conferenceTicketActions.getConferenceById(id);
-        model.addAttribute("conferenseData", conference);
+        model.addAttribute("conferenceData", conference);
         model.addAttribute("dayOfWeek", this.getDayOfWeek(conference.getDate()));
 
 
@@ -46,7 +46,7 @@ public class ConferenceTicketController {
             model.addAttribute("profileImg", "../../resources/img/default.gif");
         }
 
-        return "conferenceTicket";
+        return "profiles/conferenceTicket";
     }
 
 

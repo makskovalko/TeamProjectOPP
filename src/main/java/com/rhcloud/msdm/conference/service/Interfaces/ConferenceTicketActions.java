@@ -8,7 +8,8 @@ public interface ConferenceTicketActions {
 
     Conference getConferenceById(Integer id);
 
-    List<Conference> getLastConference(Integer number);
+    List<Conference> getLastConferences(Integer number);
 
+    void buyTicket(Integer conferenceId);
 
 }

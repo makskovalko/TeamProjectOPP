@@ -1,5 +1,6 @@
 package com.rhcloud.msdm.conference.controller;
 
+import com.rhcloud.msdm.conference.domain.entities.Category;
 import com.rhcloud.msdm.conference.domain.entities.Organizer;
 import com.rhcloud.msdm.conference.domain.entities.User;
 import com.rhcloud.msdm.conference.repository.CategoryRepository;
@@ -18,17 +19,18 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.security.GeneralSecurityException;
+import java.util.HashMap;
+import java.util.Map;
 
 @Controller
 public class MainController {
 
-    @Autowired
-    private CategoryRepository categoryRepository;
     @Autowired
     private ConferenceRepository conferenceRepository;
 
@@ -41,9 +43,12 @@ public class MainController {
     @Resource(name = "googleDriveService")
     private GoogleDriveService googleDriveService;
 
+    @Resource(name = "categoryRepository")
+    private CategoryRepository categoryRepository;
+
 
     @RequestMapping(value = "/profile/participant", method = RequestMethod.GET)
-    public String participantView(Model model, HttpSession session) throws BufferDirIsNotDirectoryException, GeneralSecurityException, IOException {
+    public String participantView(Model model, HttpSession session) throws GeneralSecurityException, IOException {
         String fileName = ((User) session.getAttribute("user")).getUserName();
         if (fileUploaderService.fileExists(fileName) != null || googleDriveService.download(fileName)) {
             model.addAttribute("profileImg", "../resources/ProfileImagesBufferDir/" + fileUploaderService.fileExists(fileName).getName());
@@ -51,7 +56,7 @@ public class MainController {
             model.addAttribute("profileImg", "../resources/img/default.gif");
         }
 
-        model.addAttribute("lastConferences", conferenceTicketActions.getLastConference(10));
+        model.addAttribute("lastConferences", conferenceTicketActions.getLastConferences(10));
 
         return "profiles/participant";
     }
@@ -72,8 +77,14 @@ public class MainController {
 
     @RequestMapping(value = "/upload/profile/img", method = RequestMethod.POST)
     @ResponseBody
-    public UploadStatus upload(@RequestParam("file") MultipartFile file, HttpSession session) throws BufferDirIsNotDirectoryException, GeneralSecurityException, IOException {
+    public UploadStatus upload(@RequestParam("file") MultipartFile file, HttpSession session) throws GeneralSecurityException, IOException {
 
         return fileUploaderService.uploadToLocalMachineAndGoogleDrive(file, ((User) session.getAttribute("user")).getUserName());
+    }
+
+    @RequestMapping(value = "/ticket", method = RequestMethod.GET)
+    public ModelAndView getParticipantTicket() {
+
+        return new ModelAndView("ticketPDF", "data", null);
     }
 }

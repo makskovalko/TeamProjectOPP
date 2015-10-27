@@ -9,8 +9,9 @@ public class Category {
     @GeneratedValue
     private Integer id;
 
-    @Column(name = "name")
     private String name;
+
+    private String color;
 
     public Category() {}
 
@@ -30,5 +31,11 @@ public class Category {
         this.name = name;
     }
 
+    public String getColor() {
+        return color;
+    }
 
+    public void setColor(String color) {
+        this.color = color;
+    }
 }

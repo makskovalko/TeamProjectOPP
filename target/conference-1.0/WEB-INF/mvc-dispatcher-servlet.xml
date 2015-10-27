@@ -30,6 +30,15 @@
     <context:component-scan base-package="com.rhcloud.msdm.conference"/>
     <context:property-placeholder location="classpath:config.properties" system-properties-mode="ENVIRONMENT"/>
 
+
+    <bean class="org.springframework.web.servlet.mvc.support.ControllerClassNameHandlerMapping" />
+
+    <bean class="org.springframework.web.servlet.view.XmlViewResolver">
+        <property name="location">
+            <value>/WEB-INF/spring-pdf-views.xml</value>
+        </property>
+    </bean>
+
     <bean id="templateResolver"
           class="org.thymeleaf.templateresolver.ServletContextTemplateResolver">
         <property name="prefix" value="/WEB-INF/pages/"/>
@@ -87,12 +96,24 @@
         </property>
     </bean>
 
-    <!--<mvc:interceptors>
+    <mvc:interceptors>
         <mvc:interceptor>
-            <mvc:mapping path="/**"/>
-            <bean class="com.rhcloud.msdm.conference.security.MainInterceptor"/>
+            <mvc:mapping path="/profile/participant/**"/>
+            <bean class="com.rhcloud.msdm.conference.security.ParticipantInterceptor"/>
         </mvc:interceptor>
-    </mvc:interceptors>-->
+        <mvc:interceptor>
+            <mvc:mapping path="/profile/speaker/**"/>
+            <bean class="com.rhcloud.msdm.conference.security.SpeakerInterceptor"/>
+        </mvc:interceptor>
+        <mvc:interceptor>
+            <mvc:mapping path="/profile/organizer/**"/>
+            <bean class="com.rhcloud.msdm.conference.security.OrganizerInterceptor"/>
+        </mvc:interceptor>
+        <mvc:interceptor>
+            <mvc:mapping path="/conference/**"/>
+            <bean class="com.rhcloud.msdm.conference.security.ConferenceInterceptor"/>
+        </mvc:interceptor>
+    </mvc:interceptors>
 
 
     <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver"
@@ -115,13 +136,5 @@
           c:pathToServiceAccountPrivateKeyFromP12File="${google.drive.pathToServiceAccountPrivateKeyFromP12File}"
           c:pathToBufferDir="${upload.pathToBufferDir}"
           c:appName="${google.drive.appName}"/>
-
-    <bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
-        <property name="objectMapper">
-            <bean class="org.springframework.http.converter.json.Jackson2ObjectMapperFactoryBean"
-                  p:autoDetectFields="true"
-                  p:autoDetectGettersSetters="true" />
-        </property>
-    </bean>
 
 </beans>

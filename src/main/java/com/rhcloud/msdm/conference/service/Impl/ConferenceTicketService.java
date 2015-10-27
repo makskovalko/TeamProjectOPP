@@ -24,12 +24,17 @@ public class ConferenceTicketService implements ConferenceTicketActions {
 
 
     @Override
-    public List<Conference> getLastConference(Integer number) {
+    public List<Conference> getLastConferences(Integer number) {
 
         int lastConferenceID = conferenceRepository.findMaxID();
         if (lastConferenceID < number) {
             return conferenceRepository.findAllConferenceByIdBetween(1, number + 1);
         }
         return conferenceRepository.findAllConferenceByIdBetween(lastConferenceID - number, number + 1);
+    }
+
+    @Override
+    public void buyTicket(Integer conferenceId) {
+        conferenceRepository.buyTicket(conferenceId);
     }
 }

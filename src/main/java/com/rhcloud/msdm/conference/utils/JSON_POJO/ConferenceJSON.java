@@ -8,7 +8,16 @@ public class ConferenceJSON {
 
     public ConferenceJSON() {}
 
+    public String getTicketPrice() {
+        return ticketPrice;
+    }
+
+    public void setTicketPrice(String ticketPrice) {
+        this.ticketPrice = ticketPrice;
+    }
+
     public ConferenceJSON(Conference conference) {
+        this.id = conference.getId();
         this.name = conference.getName();
         this.country = conference.getCountry();
         this.city = conference.getCity();
@@ -18,11 +27,35 @@ public class ConferenceJSON {
         this.organizerId = conference.getOrganizer().getId();
         this.categoryId = conference.getCategory().getId();
         this.date = conference.getDate();
+        this.ticketPrice = conference.getTicketPrice();
+        this.participantCount = conference.getParticipantCount();
     }
 
-    private String name, country, city, address, description;
+    private String name, country, city, address, description, ticketPrice;
 
-    private Integer participantLimit, organizerId, categoryId;
+    private Integer participantLimit;
+
+    public Integer getParticipantCount() {
+        return participantCount;
+    }
+
+    public void setParticipantCount(Integer participantCount) {
+        this.participantCount = participantCount;
+    }
+
+    private Integer participantCount;
+    private Integer organizerId;
+    private Integer categoryId;
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    private Integer id;
     private Date date;
 
     public String getName() {

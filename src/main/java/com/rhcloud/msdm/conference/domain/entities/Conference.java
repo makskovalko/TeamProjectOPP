@@ -1,6 +1,8 @@
 package com.rhcloud.msdm.conference.domain.entities;
 
 import com.rhcloud.msdm.conference.utils.JSON_POJO.ConferenceJSON;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -21,6 +23,8 @@ public class Conference {
         this.date = conferenceJSON.getDate();
         this.participantLimit = conferenceJSON.getParticipantLimit();
         this.description = conferenceJSON.getDescription();
+        this.ticketPrice = conferenceJSON.getTicketPrice();
+        this.participantCount = conferenceJSON.getParticipantCount();
     }
 
     @Id
@@ -34,6 +38,9 @@ public class Conference {
     private String city;
     private String address;
 
+    @Column(name = "ticket_price")
+    private String ticketPrice;
+
     @Column(name = "description", columnDefinition = "TEXT")
     private String description;
     private Date date;
@@ -44,7 +51,8 @@ public class Conference {
     @ManyToOne
     private Organizer organizer;
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = { CascadeType.ALL, CascadeType.PERSIST })
+    @ManyToMany
+    @LazyCollection(LazyCollectionOption.FALSE)
     @JoinTable(name = "CONFERENCE_PARTICIPANT", joinColumns = {@JoinColumn(name = "conference_id")},
             inverseJoinColumns = {@JoinColumn(name = "participant_id")})
     private List<Participant> participants;
@@ -165,6 +173,14 @@ public class Conference {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getTicketPrice() {
+        return ticketPrice;
+    }
+
+    public void setTicketPrice(String ticketPrice) {
+        this.ticketPrice = ticketPrice;
     }
 
     @Override
